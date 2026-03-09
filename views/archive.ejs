@@ -1,0 +1,78 @@
+<% layout('main') %>
+
+<%- include('./sidebar') %>
+
+<div class="main-content">
+  <%- include('./topbar') %>
+  <%- include('./alerts') %>
+
+  <div class="page-content">
+    <div class="mb-3">
+      <h5 style="font-weight: 700;"><i class="fas fa-archive me-2"></i>Archived Records</h5>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">View and restore archived data across all modules.</p>
+    </div>
+
+    <ul class="nav nav-tabs mb-3" role="tablist">
+      <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#archSchedules">Schedules</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#archStudents">Students</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#archSubjects">Subjects</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#archTeachers">Teachers</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#archSections">Sections</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#archRooms">Rooms</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <% const tabs = [
+        { id: 'archSchedules', data: typeof archivedSchedules !== 'undefined' ? archivedSchedules : [], model: 'schedule', cols: ['Subject','Teacher','Day/Time'],
+          render: (s) => [s.subjectId ? s.subjectId.subjectCode : 'N/A', s.teacherId ? s.teacherId.lname : 'N/A', s.day + ' ' + s.timeFrom + '-' + s.timeTo] },
+        { id: 'archStudents', data: typeof archivedStudents !== 'undefined' ? archivedStudents : [], model: 'student', cols: ['Student No.','Name','Course'],
+          render: (s) => [s.studentNumber, s.lname + ', ' + s.fname, s.course] },
+        { id: 'archSubjects', data: typeof archivedSubjects !== 'undefined' ? archivedSubjects : [], model: 'subject', cols: ['Code','Name','Units'],
+          render: (s) => [s.subjectCode, s.subjectName, s.units] },
+        { id: 'archTeachers', data: typeof archivedTeachers !== 'undefined' ? archivedTeachers : [], model: 'teacher', cols: ['Name','Department','Email'],
+          render: (t) => [t.lname + ', ' + t.fname, t.department || '-', t.email || '-'] },
+        { id: 'archSections', data: typeof archivedSections !== 'undefined' ? archivedSections : [], model: 'section', cols: ['Section','Year','Program'],
+          render: (s) => [s.sectionName, 'Year ' + s.yearLevel, s.program] },
+        { id: 'archRooms', data: typeof archivedRooms !== 'undefined' ? archivedRooms : [], model: 'room', cols: ['Room','Building','Capacity'],
+          render: (r) => [r.roomNumber, r.building || '-', r.capacity || '-'] }
+      ] %>
+
+      <% tabs.forEach((tab, tabIdx) => { %>
+      <div class="tab-pane fade <%= tabIdx === 0 ? 'show active' : '' %>" id="<%= tab.id %>">
+        <div class="card-custom">
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <% tab.cols.forEach(col => { %><th><%= col %></th><% }) %>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (tab.data.length > 0) { %>
+                    <% tab.data.forEach((item, i) => { %>
+                    <tr>
+                      <td><%= i + 1 %></td>
+                      <% tab.render(item).forEach(val => { %><td><%= val %></td><% }) %>
+                      <td>
+                        <form action="/archive/restore/<%= tab.model %>/<%= item._id %>" method="POST" style="display:inline;">
+                          <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-undo me-1"></i>Restore</button>
+                        </form>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  <% } else { %>
+                    <tr><td colspan="<%= tab.cols.length + 2 %>" class="text-center text-muted py-3">No archived records.</td></tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</div>

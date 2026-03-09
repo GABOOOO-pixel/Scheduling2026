@@ -1,0 +1,156 @@
+<% layout('main') %>
+
+<%- include('./sidebar') %>
+
+<div class="main-content">
+  <%- include('./topbar') %>
+  <%- include('./alerts') %>
+
+  <div class="page-content">
+    <!-- WELCOME -->
+    <div class="mb-4">
+      <h4 style="font-weight: 800;">Welcome back, <%= user ? user.username : 'User' %>! 👋</h4>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">Here's an overview of Schedule26 system.</p>
+    </div>
+
+    <!-- STAT CARDS -->
+    <% if (user && (user.role === 'super_admin' || user.role === 'admin')) { %>
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: #dbeafe; color: #2563eb;">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div class="stat-info">
+            <h3><%= typeof schedules !== 'undefined' ? schedules.length : 0 %></h3>
+            <p>Total Schedules</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: #d1fae5; color: #059669;">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <div class="stat-info">
+            <h3><%= typeof students !== 'undefined' ? students.length : 0 %></h3>
+            <p>Total Students</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: #fef3c7; color: #d97706;">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <div class="stat-info">
+            <h3><%= typeof teachers !== 'undefined' ? teachers.length : 0 %></h3>
+            <p>Total Teachers</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: #fce7f3; color: #db2777;">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="stat-info">
+            <h3><%= typeof subjects !== 'undefined' ? subjects.length : 0 %></h3>
+            <p>Total Subjects</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: #e0e7ff; color: #4f46e5;">
+            <i class="fas fa-layer-group"></i>
+          </div>
+          <div class="stat-info">
+            <h3><%= typeof sections !== 'undefined' ? sections.length : 0 %></h3>
+            <p>Total Sections</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: #fae8ff; color: #a855f7;">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <div class="stat-info">
+            <h3><%= typeof rooms !== 'undefined' ? rooms.length : 0 %></h3>
+            <p>Total Rooms</p>
+          </div>
+        </div>
+      </div>
+      <% if (user.role === 'super_admin') { %>
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: #ccfbf1; color: #0d9488;">
+            <i class="fas fa-users-cog"></i>
+          </div>
+          <div class="stat-info">
+            <h3><%= typeof users !== 'undefined' ? users.length : 0 %></h3>
+            <p>User Accounts</p>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+    <% } %>
+
+    <% if (user && user.role === 'faculty') { %>
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: #dbeafe; color: #2563eb;">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="stat-info">
+            <h3><%= typeof facultySchedules !== 'undefined' ? facultySchedules.length : 0 %></h3>
+            <p>My Assigned Schedules</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FACULTY QUICK VIEW -->
+    <% if (typeof facultySchedules !== 'undefined' && facultySchedules.length > 0) { %>
+    <div class="card-custom">
+      <div class="card-header">
+        <span><i class="fas fa-calendar-alt me-2"></i>My Schedule Overview</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Subject</th>
+                <th>Section</th>
+                <th>Room</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% facultySchedules.forEach(sched => { %>
+              <tr>
+                <td><strong><%= sched.day %></strong></td>
+                <td><%= sched.timeFrom %> - <%= sched.timeTo %></td>
+                <td><%= sched.subjectId ? sched.subjectId.subjectName : 'N/A' %></td>
+                <td><%= sched.sectionId ? sched.sectionId.sectionName : 'N/A' %></td>
+                <td><%= sched.roomId ? sched.roomId.roomNumber : 'TBA' %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <% } %>
+    <% } %>
+
+  </div>
+</div>

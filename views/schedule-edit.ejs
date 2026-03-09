@@ -1,0 +1,120 @@
+<% layout('main') %>
+
+<%- include('./sidebar') %>
+
+<div class="main-content">
+  <%- include('./topbar') %>
+  <%- include('./alerts') %>
+
+  <div class="page-content">
+    <div class="card-custom" style="max-width: 800px;">
+      <div class="card-header">
+        <span><i class="fas fa-edit me-2"></i>Edit Schedule</span>
+        <a href="/schedule" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Back</a>
+      </div>
+      <div class="card-body">
+        <form action="/schedule/update/<%= schedule._id %>" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Subject</label>
+              <select name="subjectId" class="form-select" required>
+                <% if (typeof subjects !== 'undefined') { %>
+                  <% subjects.forEach(sub => { %>
+                    <option value="<%= sub._id %>" <%= schedule.subjectId && schedule.subjectId._id.toString() === sub._id.toString() ? 'selected' : '' %>>
+                      <%= sub.subjectCode %> - <%= sub.subjectName %>
+                    </option>
+                  <% }) %>
+                <% } %>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Teacher</label>
+              <select name="teacherId" class="form-select" required>
+                <% if (typeof teachers !== 'undefined') { %>
+                  <% teachers.forEach(t => { %>
+                    <option value="<%= t._id %>" <%= schedule.teacherId && schedule.teacherId._id.toString() === t._id.toString() ? 'selected' : '' %>>
+                      <%= t.lname %>, <%= t.fname %>
+                    </option>
+                  <% }) %>
+                <% } %>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Section</label>
+              <select name="sectionId" class="form-select" required>
+                <% if (typeof sections !== 'undefined') { %>
+                  <% sections.forEach(sec => { %>
+                    <option value="<%= sec._id %>" <%= schedule.sectionId && schedule.sectionId._id.toString() === sec._id.toString() ? 'selected' : '' %>>
+                      <%= sec.sectionName %>
+                    </option>
+                  <% }) %>
+                <% } %>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Room</label>
+              <select name="roomId" class="form-select">
+                <option value="">-- No Room --</option>
+                <% if (typeof rooms !== 'undefined') { %>
+                  <% rooms.forEach(rm => { %>
+                    <option value="<%= rm._id %>" <%= schedule.roomId && schedule.roomId._id.toString() === rm._id.toString() ? 'selected' : '' %>>
+                      <%= rm.roomNumber %> <%= rm.building ? '(' + rm.building + ')' : '' %>
+                    </option>
+                  <% }) %>
+                <% } %>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Day</label>
+              <select name="day" class="form-select" required>
+                <% ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].forEach(d => { %>
+                  <option <%= schedule.day === d ? 'selected' : '' %>><%= d %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Time From</label>
+              <input type="time" name="timeFrom" class="form-control" value="<%= schedule.timeFrom %>" required />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Time To</label>
+              <input type="time" name="timeTo" class="form-control" value="<%= schedule.timeTo %>" required />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Year Level</label>
+              <select name="yearLevel" class="form-select" required>
+                <% [1,2,3,4].forEach(y => { %>
+                  <option value="<%= y %>" <%= schedule.yearLevel === y ? 'selected' : '' %>><%= y %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Semester</label>
+              <select name="semester" class="form-select" required>
+                <option value="1" <%= schedule.semester === 1 ? 'selected' : '' %>>1st Semester</option>
+                <option value="2" <%= schedule.semester === 2 ? 'selected' : '' %>>2nd Semester</option>
+                <option value="3" <%= schedule.semester === 3 ? 'selected' : '' %>>Summer</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">School Year</label>
+              <input type="text" name="schoolYear" class="form-control" value="<%= schedule.schoolYear %>" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Status</label>
+              <select name="status" class="form-select">
+                <% ['active','inactive','cancelled'].forEach(s => { %>
+                  <option <%= schedule.status === s ? 'selected' : '' %>><%= s %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+          <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-accent"><i class="fas fa-save me-1"></i>Update Schedule</button>
+            <a href="/schedule" class="btn btn-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
