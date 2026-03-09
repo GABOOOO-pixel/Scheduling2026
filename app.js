@@ -41,7 +41,8 @@ const User = require('./model/User');
 const {
   isSchedule, isStudent, isSubject, isTeacher,
   isSection, isRoom, isUser, isFacultySchedule,
-  isAuth, isSuperAdmin, isAdmin, isFaculty, isGuest
+  isAuth, isSuperAdmin, isAdmin, isFaculty, isGuest,
+  isStudentAuth, isStudentGuest
 } = require('./middleware');
 
 const app = express();
@@ -130,6 +131,7 @@ app.use((req, res, next) => {
   res.locals.success = req.session.success || null;
   res.locals.denied = req.session.denied || null;
   res.locals.user = req.session.user || null;
+  res.locals.student = req.session.student || null;
 
   // Clear after reading (flash-style)
   req.session.error = null;
@@ -200,14 +202,24 @@ app.get('/logout', (req, res) => {
   });
 });
 
-// ---------- STUDENT ONLINE FORM ----------
+// ---------- STUDENT ONLINE FORM (Registration) ----------
 app.get('/student-form', (req, res) => {
-  return res.render('form', { title: 'Student Form' });
+  return res.render('form', { title: 'Student Registration' });
 });
 
 app.post('/student-form', async (req, res) => {
   try {
-    const { fname, mname, lname, suffix, email, contactNumber, address, studentNumber, yearLevel, studentType, semester, schoolYear } = req.body;
+    const { fname, mname, lname, suffix, email, contactNumber, address, studentNumber, yearLevel, studentType, semester, schoolYear, password, confirmPassword } = req.body;
+
+    if (!password || password.length < 6) {
+      req.session.error = 'Password must be at least 6 characters!';
+      return res.redirect('/student-form');
+    }
+
+    if (password !== confirmPassword) {
+      req.session.error = 'Passwords do not match!';
+      return res.redirect('/student-form');
+    }
 
     const exists = await Student.findOne({ studentNumber });
     if (exists) {
@@ -215,17 +227,129 @@ app.post('/student-form', async (req, res) => {
       return res.redirect('/student-form');
     }
 
+    const emailExists = await Student.findOne({ email });
+    if (emailExists) {
+      req.session.error = 'Email already registered!';
+      return res.redirect('/student-form');
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+
     await Student.create({
       fname, mname, lname, suffix, email, contactNumber, address,
       studentNumber, yearLevel: Number(yearLevel),
-      studentType, semester: Number(semester), schoolYear
+      studentType, semester: Number(semester), schoolYear,
+      password: hashed
     });
 
-    return res.render('success', { title: 'Form Submitted' });
+    return res.render('success', { title: 'Registration Successful' });
   } catch (err) {
     console.error('❌ Student form error:', err.message);
     req.session.error = 'Failed to submit form. Please try again.';
     return res.redirect('/student-form');
+  }
+});
+
+
+// =============================================================================
+//  STUDENT PORTAL ROUTES
+// =============================================================================
+
+// ---------- STUDENT LOGIN PAGE ----------
+app.get('/student-login', isStudentGuest, (req, res) => {
+  return res.render('student-login', { title: 'Student Login' });
+});
+
+// ---------- STUDENT LOGIN POST ----------
+app.post('/student-login', isStudentGuest, async (req, res) => {
+  try {
+    const { studentNumber, password } = req.body;
+    const student = await Student.findOne({ studentNumber, isArchive: false, status: 'active' });
+
+    if (!student) {
+      req.session.error = 'Invalid student number or password!';
+      return res.redirect('/student-login');
+    }
+
+    const match = await bcrypt.compare(password, student.password);
+    if (!match) {
+      req.session.error = 'Invalid student number or password!';
+      return res.redirect('/student-login');
+    }
+
+    req.session.student = {
+      _id: student._id.toString(),
+      studentNumber: student.studentNumber,
+      fname: student.fname,
+      mname: student.mname,
+      lname: student.lname,
+      suffix: student.suffix,
+      email: student.email,
+      yearLevel: student.yearLevel,
+      studentType: student.studentType,
+      semester: student.semester,
+      schoolYear: student.schoolYear,
+      sectionId: student.sectionId ? student.sectionId.toString() : null
+    };
+
+    req.session.success = `Welcome, ${student.fname}!`;
+    return res.redirect('/student-dashboard');
+  } catch (err) {
+    console.error('❌ Student login error:', err.message);
+    req.session.error = 'Something went wrong. Try again.';
+    return res.redirect('/student-login');
+  }
+});
+
+// ---------- STUDENT LOGOUT ----------
+app.get('/student-logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) console.error('❌ Student logout error:', err);
+    return res.redirect('/student-login');
+  });
+});
+
+// ---------- STUDENT DASHBOARD ----------
+app.get('/student-dashboard', isStudentAuth, async (req, res) => {
+  try {
+    const student = await Student.findById(req.session.student._id)
+      .populate('sectionId')
+      .lean();
+
+    if (!student) {
+      req.session.error = 'Student not found.';
+      return res.redirect('/student-login');
+    }
+
+    let studentSchedules = [];
+    if (student.sectionId) {
+      studentSchedules = await Schedule.find({
+        sectionId: student.sectionId._id,
+        yearLevel: student.yearLevel,
+        semester: student.semester,
+        schoolYear: student.schoolYear,
+        isArchive: false,
+        status: 'active'
+      })
+        .populate('subjectId')
+        .populate('teacherId')
+        .populate('sectionId')
+        .populate('roomId')
+        .lean();
+
+      const dayOrder = { Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6, Sunday: 7 };
+      studentSchedules.sort((a, b) => (dayOrder[a.day] || 8) - (dayOrder[b.day] || 8) || a.timeFrom.localeCompare(b.timeFrom));
+    }
+
+    return res.render('student-dashboard', {
+      title: 'Student Dashboard',
+      student,
+      studentSchedules
+    });
+  } catch (err) {
+    console.error('❌ Student dashboard error:', err.message);
+    req.session.error = 'Failed to load dashboard.';
+    return res.redirect('/student-login');
   }
 });
 

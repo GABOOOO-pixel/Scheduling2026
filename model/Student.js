@@ -9,10 +9,14 @@ const studentSchema = new mongoose.Schema(
       trim: true,
       validate: {
         validator: function (v) {
-          return /^\d{4}-\d{4,5}$/.test(v);
+          return /^\d{2}-\d{4}-\d{6}$/.test(v);
         },
-        message: "Student number must follow the format YYYY-NNNN (e.g. 2021-0001)",
+        message: "Student number must follow the format 00-0000-000000",
       },
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
     },
     fname: {
       type: String,
