@@ -64,8 +64,11 @@ mongoose.connect(process.env.MONGO_URI)
 // =============================================
 const store = MongoStore.create({
   mongoUrl: process.env.MONGO_URI,
-  collectionName: 'sessions'
+  collectionName: 'sessions',
+  touchAfter: 24 * 3600 // only update session once per 24hrs — fixes "touch" warning
 });
+
+store.on('error', (err) => console.error('❌ Session store error:', err));
 
 // =============================================
 // APP CONFIG
@@ -145,7 +148,12 @@ app.use((req, res, next) => {
 
 // ---------- LOGIN PAGE ----------
 app.get('/', isGuest, (req, res) => {
-  res.render('index', { title: 'Login' });
+  return res.render('index', { title: 'Login' });
+});
+
+// ---------- /login redirect — in case any link/form points to /login ----------
+app.get('/login', (req, res) => {
+  return res.redirect('/');
 });
 
 // ---------- LOGIN POST ----------
@@ -188,13 +196,13 @@ app.post('/login', isGuest, async (req, res) => {
 app.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) console.error('❌ Logout error:', err);
-    res.redirect('/');
+    return res.redirect('/');
   });
 });
 
 // ---------- STUDENT ONLINE FORM ----------
 app.get('/student-form', (req, res) => {
-  res.render('form', { title: 'Student Form' });
+  return res.render('form', { title: 'Student Form' });
 });
 
 app.post('/student-form', async (req, res) => {
@@ -228,7 +236,7 @@ app.post('/student-form', async (req, res) => {
 
 app.get('/dashboard', isAuth, isSchedule, isStudent, isSubject, isTeacher, isSection, isRoom, isUser, isFacultySchedule, (req, res) => {
   res.locals.active = 'dashboard';
-  res.render('home', { title: 'Dashboard', pageTitle: 'Dashboard' });
+  return res.render('home', { title: 'Dashboard', pageTitle: 'Dashboard' });
 });
 
 
@@ -238,7 +246,7 @@ app.get('/dashboard', isAuth, isSchedule, isStudent, isSubject, isTeacher, isSec
 
 app.get('/schedule', isAuth, isAdmin, isSchedule, isSubject, isTeacher, isSection, isRoom, (req, res) => {
   res.locals.active = 'schedule';
-  res.render('schedule', { title: 'Schedules', pageTitle: 'Schedule Management' });
+  return res.render('schedule', { title: 'Schedules', pageTitle: 'Schedule Management' });
 });
 
 app.post('/schedule/add', isAuth, isAdmin, async (req, res) => {
@@ -270,7 +278,7 @@ app.get('/schedule/edit/:id', isAuth, isAdmin, isSubject, isTeacher, isSection, 
       return res.redirect('/schedule');
     }
     res.locals.active = 'schedule';
-    res.render('schedule-edit', { title: 'Edit Schedule', pageTitle: 'Edit Schedule', schedule });
+    return res.render('schedule-edit', { title: 'Edit Schedule', pageTitle: 'Edit Schedule', schedule });
   } catch (err) {
     console.error('❌ Edit schedule error:', err.message);
     req.session.error = 'Failed to load schedule.';
@@ -314,7 +322,7 @@ app.post('/schedule/delete/:id', isAuth, isAdmin, async (req, res) => {
 
 app.get('/students', isAuth, isAdmin, isStudent, isSection, (req, res) => {
   res.locals.active = 'students';
-  res.render('students', { title: 'Students', pageTitle: 'Student Management' });
+  return res.render('students', { title: 'Students', pageTitle: 'Student Management' });
 });
 
 app.post('/students/assign-section/:id', isAuth, isAdmin, async (req, res) => {
@@ -344,7 +352,7 @@ app.post('/students/delete/:id', isAuth, isAdmin, async (req, res) => {
 
 app.get('/subjects', isAuth, isAdmin, isSubject, (req, res) => {
   res.locals.active = 'subjects';
-  res.render('subjects', { title: 'Subjects', pageTitle: 'Subject Management' });
+  return res.render('subjects', { title: 'Subjects', pageTitle: 'Subject Management' });
 });
 
 app.post('/subjects/add', isAuth, isAdmin, async (req, res) => {
@@ -387,7 +395,7 @@ app.post('/subjects/delete/:id', isAuth, isAdmin, async (req, res) => {
 
 app.get('/teachers', isAuth, isAdmin, isTeacher, (req, res) => {
   res.locals.active = 'teachers';
-  res.render('teachers', { title: 'Teachers', pageTitle: 'Teacher Management' });
+  return res.render('teachers', { title: 'Teachers', pageTitle: 'Teacher Management' });
 });
 
 app.post('/teachers/add', isAuth, isAdmin, async (req, res) => {
@@ -430,7 +438,7 @@ app.post('/teachers/delete/:id', isAuth, isAdmin, async (req, res) => {
 
 app.get('/sections', isAuth, isAdmin, isSection, (req, res) => {
   res.locals.active = 'sections';
-  res.render('sections', { title: 'Sections', pageTitle: 'Section Management' });
+  return res.render('sections', { title: 'Sections', pageTitle: 'Section Management' });
 });
 
 app.post('/sections/add', isAuth, isAdmin, async (req, res) => {
@@ -472,7 +480,7 @@ app.post('/sections/delete/:id', isAuth, isAdmin, async (req, res) => {
 
 app.get('/rooms', isAuth, isAdmin, isRoom, (req, res) => {
   res.locals.active = 'rooms';
-  res.render('rooms', { title: 'Rooms', pageTitle: 'Room Management' });
+  return res.render('rooms', { title: 'Rooms', pageTitle: 'Room Management' });
 });
 
 app.post('/rooms/add', isAuth, isAdmin, async (req, res) => {
@@ -514,7 +522,7 @@ app.post('/rooms/delete/:id', isAuth, isAdmin, async (req, res) => {
 
 app.get('/my-schedule', isAuth, isFaculty, isFacultySchedule, (req, res) => {
   res.locals.active = 'my-schedule';
-  res.render('faculty-schedule', { title: 'My Schedule', pageTitle: 'My Teaching Schedule' });
+  return res.render('faculty-schedule', { title: 'My Schedule', pageTitle: 'My Teaching Schedule' });
 });
 
 
@@ -524,7 +532,7 @@ app.get('/my-schedule', isAuth, isFaculty, isFacultySchedule, (req, res) => {
 
 app.get('/users', isAuth, isSuperAdmin, isUser, isTeacher, (req, res) => {
   res.locals.active = 'users';
-  res.render('users', { title: 'Users', pageTitle: 'User Accounts' });
+  return res.render('users', { title: 'Users', pageTitle: 'User Accounts' });
 });
 
 app.post('/users/add', isAuth, isSuperAdmin, async (req, res) => {
@@ -591,7 +599,7 @@ app.get('/archive', isAuth, isSuperAdmin, async (req, res) => {
     ]);
 
     res.locals.active = 'archive';
-    res.render('archive', {
+    return res.render('archive', {
       title: 'Archives', pageTitle: 'Archived Records',
       archivedSchedules, archivedStudents, archivedSubjects,
       archivedTeachers, archivedSections, archivedRooms
@@ -631,7 +639,7 @@ app.post('/archive/restore/:model/:id', isAuth, isSuperAdmin, async (req, res) =
 
 app.get('/profile', isAuth, (req, res) => {
   res.locals.active = 'profile';
-  res.render('profile', { title: 'Profile', pageTitle: 'My Profile' });
+  return res.render('profile', { title: 'Profile', pageTitle: 'My Profile' });
 });
 
 app.post('/profile/change-password', isAuth, async (req, res) => {
@@ -701,13 +709,12 @@ app.get('/seed', async (req, res) => {
 // =============================================================================
 
 app.use((req, res) => {
-  res.status(404);
-  res.render('404', { title: '404 - Not Found', error: 'Oops! Page cannot be found!' });
+  return res.status(404).render('404', { title: '404 - Not Found', error: 'Oops! Page cannot be found!' });
 });
 
 app.use((err, req, res, next) => {
   console.error('⚠️ Error:', err.message);
-  res.status(500).render('index', {
+  return res.status(500).render('index', {
     title: 'Error',
     error: 'Something went wrong! ' + err.message
   });
