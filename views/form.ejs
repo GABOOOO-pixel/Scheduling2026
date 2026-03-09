@@ -153,8 +153,21 @@
         </div>
       </div>
 
+      <!-- ACCOUNT CREDENTIALS -->
+      <div class="section-title">Account Credentials</div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Password <span class="text-danger">*</span></label>
+          <input type="password" name="password" id="passwordField" class="form-control" placeholder="Min. 6 characters" required minlength="6" />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+          <input type="password" name="confirmPassword" id="confirmPasswordField" class="form-control" placeholder="Re-enter password" required minlength="6" />
+        </div>
+      </div>
+
       <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
-        <a href="/" class="back-link"><i class="fas fa-arrow-left me-1"></i>Back to Login</a>
+        <a href="/student-login" class="back-link"><i class="fas fa-arrow-left me-1"></i>Back to Login</a>
         <button type="submit" class="btn btn-submit-form">
           <i class="fas fa-paper-plane me-2"></i>Submit Form
         </button>
@@ -270,6 +283,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const studentPattern = /^\d{2}-\d{4}-\d{6}$/;
     if (!studentPattern.test(studentNumber)) {
       alert("Student number must be in format: 00-0000-000000");
+      e.preventDefault();
+      return;
+    }
+
+    // Password match validation
+    const password = document.getElementById('passwordField').value;
+    const confirmPassword = document.getElementById('confirmPasswordField').value;
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      e.preventDefault();
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
       e.preventDefault();
       return;
     }

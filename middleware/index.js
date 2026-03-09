@@ -7,9 +7,9 @@ const isRoom = require("./isRoom");
 const isUser = require("./isUser");
 const isFacultySchedule = require("./isFacultySchedule");
 const { isAuth, isSuperAdmin, isAdmin, isFaculty, isGuest } = require("./isAuth");
+const { isStudentAuth, isStudentGuest } = require("./isStudentAuth");
 
 module.exports = {
-  // Data-fetching middleware
   isSchedule,
   isStudent,
   isSubject,
@@ -18,11 +18,11 @@ module.exports = {
   isRoom,
   isUser,
   isFacultySchedule,
-
-  // Auth & role middleware
   isAuth,
   isSuperAdmin,
   isAdmin,
   isFaculty,
   isGuest,
+  isStudentAuth,
+  isStudentGuest,
 };

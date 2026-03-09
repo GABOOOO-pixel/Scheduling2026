@@ -1,0 +1,294 @@
+<% layout('public') %>
+
+<style>
+  :root {
+    --student-primary: #052e16;
+    --student-primary-light: #14532d;
+    --student-accent: #15803d;
+    --student-bg: #f0fdf4;
+    --card-bg: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+  }
+  body { background: var(--student-bg); }
+
+  .student-topbar {
+    background: var(--student-primary);
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+  }
+  .student-topbar .brand-area {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .student-topbar .brand-area img { height: 36px; width: 36px; }
+  .student-topbar .brand-area .brand-text {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+  .student-topbar .brand-area .brand-text span { color: #f59e0b; }
+  .student-topbar .user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .student-topbar .user-section .name { color: #fff; font-size: 0.85rem; font-weight: 600; }
+  .student-topbar .user-section .student-no { color: #a7f3d0; font-size: 0.7rem; }
+  .btn-logout {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-logout:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+  .student-content { padding: 1.5rem; max-width: 1100px; margin: 0 auto; }
+
+  .welcome-card {
+    background: linear-gradient(135deg, var(--student-primary) 0%, var(--student-accent) 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+  }
+  .welcome-card h3 { font-weight: 800; margin-bottom: 0.25rem; }
+  .welcome-card p { color: #a7f3d0; font-size: 0.9rem; margin: 0; }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+  .info-item {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+  }
+  .info-item .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: #a7f3d0; font-weight: 700; }
+  .info-item .value { font-size: 0.95rem; font-weight: 700; margin-top: 0.15rem; }
+
+  .card-custom {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    margin-bottom: 1.25rem;
+  }
+  .card-custom .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.25rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-custom .card-body { padding: 1.25rem; }
+
+  .table thead th {
+    background: var(--student-primary);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
+  }
+  .table tbody td {
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border);
+  }
+  .table tbody tr:hover { background: #f0fdf4; }
+
+  .badge-day {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-Monday { background: #dbeafe; color: #1e40af; }
+  .badge-Tuesday { background: #fce7f3; color: #9d174d; }
+  .badge-Wednesday { background: #d1fae5; color: #065f46; }
+  .badge-Thursday { background: #fef3c7; color: #92400e; }
+  .badge-Friday { background: #e0e7ff; color: #4338ca; }
+  .badge-Saturday { background: #fae8ff; color: #86198f; }
+  .badge-Sunday { background: #fee2e2; color: #991b1b; }
+
+  .badge-status { padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; }
+  .badge-active { background: #d1fae5; color: #065f46; }
+
+  .stat-mini {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+  }
+  .stat-mini .number { font-size: 1.75rem; font-weight: 800; color: var(--student-primary); }
+  .stat-mini .label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.15rem; }
+
+  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+  .empty-state i { font-size: 3rem; margin-bottom: 1rem; }
+</style>
+
+<!-- TOPBAR -->
+<div class="student-topbar">
+  <div class="brand-area">
+    <img src="/images/logo.png" alt="logo">
+    <div class="brand-text"><span>CIT </span>Schedule <small style="font-weight: 400; font-size: 0.7rem; color: #a7f3d0;">Student Portal</small></div>
+  </div>
+  <div class="user-section">
+    <div class="text-end d-none d-md-block">
+      <div class="name"><%= student ? student.fname + ' ' + student.lname : 'Student' %></div>
+      <div class="student-no"><%= student ? student.studentNumber : '' %></div>
+    </div>
+    <a href="/student-logout" class="btn-logout"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+  </div>
+</div>
+
+<%- include('./alerts') %>
+
+<div class="student-content">
+  <% const s = typeof student !== 'undefined' ? student : null; %>
+
+  <!-- WELCOME CARD -->
+  <div class="welcome-card">
+    <h3>Welcome, <%= s ? s.fname : 'Student' %>! 👋</h3>
+    <p>Here's your schedule overview for the current term.</p>
+    <% if (s) { %>
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="label">Student No.</div>
+        <div class="value"><%= s.studentNumber %></div>
+      </div>
+      <div class="info-item">
+        <div class="label">Year Level</div>
+        <div class="value">Year <%= s.yearLevel %></div>
+      </div>
+      <div class="info-item">
+        <div class="label">Section</div>
+        <div class="value"><%= s.sectionId ? s.sectionId.sectionName : 'Not Assigned' %></div>
+      </div>
+      <div class="info-item">
+        <div class="label">Semester</div>
+        <div class="value">Sem <%= s.semester %></div>
+      </div>
+      <div class="info-item">
+        <div class="label">School Year</div>
+        <div class="value"><%= s.schoolYear %></div>
+      </div>
+      <div class="info-item">
+        <div class="label">Type</div>
+        <div class="value"><%= s.studentType ? s.studentType.charAt(0).toUpperCase() + s.studentType.slice(1) : '-' %></div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+
+  <% const scheds = typeof studentSchedules !== 'undefined' ? studentSchedules : []; %>
+
+  <!-- STAT CARDS -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="stat-mini">
+        <div class="number"><%= scheds.length %></div>
+        <div class="label">Total Classes</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-mini">
+        <div class="number"><%= scheds.reduce((sum, sc) => sum + (sc.subjectId ? sc.subjectId.units : 0), 0) %></div>
+        <div class="label">Total Units</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-mini">
+        <div class="number"><%= [...new Set(scheds.map(sc => sc.day))].length %></div>
+        <div class="label">Days / Week</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-mini">
+        <div class="number"><%= scheds.filter(sc => sc.subjectId).length %></div>
+        <div class="label">Subjects</div>
+      </div>
+    </div>
+  </div>
+
+  <% if (scheds.length === 0) { %>
+    <div class="card-custom">
+      <div class="card-body">
+        <div class="empty-state">
+          <i class="fas fa-calendar-times"></i>
+          <h5 style="font-weight: 700;">No Schedule Yet</h5>
+          <p>Your schedule hasn't been assigned yet. Please wait for the admin to set it up, or contact your department.</p>
+        </div>
+      </div>
+    </div>
+  <% } else { %>
+    <!-- SCHEDULE BY DAY -->
+    <% const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']; %>
+    <% days.forEach(day => { %>
+      <% const dayScheds = scheds.filter(sc => sc.day === day); %>
+      <% if (dayScheds.length > 0) { %>
+      <div class="card-custom">
+        <div class="card-header">
+          <span><span class="badge-day badge-<%= day %> me-2"><%= day %></span> Schedule</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);"><%= dayScheds.length %> class<%= dayScheds.length > 1 ? 'es' : '' %></span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Subject Code</th>
+                  <th>Subject Name</th>
+                  <th>Units</th>
+                  <th>Teacher</th>
+                  <th>Room</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% dayScheds.forEach(sched => { %>
+                <tr>
+                  <td><strong><%= sched.timeFrom %> - <%= sched.timeTo %></strong></td>
+                  <td><strong><%= sched.subjectId ? sched.subjectId.subjectCode : 'N/A' %></strong></td>
+                  <td><%= sched.subjectId ? sched.subjectId.subjectName : 'N/A' %></td>
+                  <td><%= sched.subjectId ? sched.subjectId.units : '-' %></td>
+                  <td><%= sched.teacherId ? sched.teacherId.fname + ' ' + sched.teacherId.lname : 'TBA' %></td>
+                  <td><%= sched.roomId ? sched.roomId.roomNumber : 'TBA' %></td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    <% }) %>
+  <% } %>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
