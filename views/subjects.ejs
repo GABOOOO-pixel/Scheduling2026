@@ -134,17 +134,20 @@
 </div>
 
 <script>
-  // Gamitin ang standard JavaScript para walang conflict sa jQuery version
+  // Units — max 1 digit, only 1-3
   document.addEventListener('input', function (e) {
     if (e.target && e.target.name === 'units') {
-      let input = e.target;
-      // Burahin ang lahat ng hindi numero
-      input.value = input.value.replace(/[^1-3-]/g, '');
-      
-      // Siguraduhin na 11 digits lang
-      if (input.value.length > 1) {
-        input.value = input.value.slice(0, 1);
-      }
+      e.target.value = e.target.value.replace(/[^1-3]/g, '').slice(0, 1);
+    }
+  });
+
+  
+</script>
+<script>
+  // Subject Code — max 7 characters (works on all modals)
+  document.addEventListener('input', function (e) {
+    if (e.target && e.target.name === 'subjectCode') {
+      e.target.value = e.target.value.slice(0, 7).toUpperCase();
     }
   });
 </script>
