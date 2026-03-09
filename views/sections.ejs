@@ -116,7 +116,7 @@
       <form action="/sections/add" method="POST">
         <div class="modal-body">
           <div class="row g-3">
-            <div class="col-12">
+            <div class="col-md-6">
               <label class="form-label">Section Name <span class="text-danger">*</span></label>
               <input type="text" name="sectionName" class="form-control" placeholder="BSIT 3A" required />
             </div>
@@ -130,9 +130,9 @@
                 <option value="4">4th Year</option>
               </select>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" style="display: none;">
               <label class="form-label">Program <span class="text-danger">*</span></label>
-              <input type="text" name="program" class="form-control" placeholder="BSIT" required />
+              <input type="text" name="program" class="form-control" placeholder="BSIT" required value="BSIT" />
             </div>
           </div>
         </div>
