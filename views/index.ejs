@@ -1,0 +1,216 @@
+<% layout('public') %>
+
+<style>
+  .login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+      background: 
+          radial-gradient(circle at 10% 5%, #052e16, transparent 25%),
+          radial-gradient(circle at 95% 90%, #15803d, transparent 24%),
+          radial-gradient(circle at 10% 60%, #14532d, transparent 30%);
+      background-blend-mode: lighten;
+      backdrop-filter: blur(10px);
+      background-color: #052e16;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    border-radius: 50%;
+  }
+  .login-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+    bottom: -100px;
+    left: -100px;
+    border-radius: 50%;
+  }
+  .login-card {
+    background: rgba(255,255,255,0.97);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
+  }
+  .login-card .brand {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .login-card .brand h2 {
+    font-weight: 800;
+    font-size: 1.75rem;
+    color: #0f172a;
+  }
+  .login-card .brand h2 span {
+    color: #f59e0b;
+  }
+  .login-card .brand p {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+  .login-input {
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.7rem 1rem 0.7rem 2.75rem;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    background: #f8fafc;
+  }
+  .login-input:focus {
+    border-color: #1e3a5f;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.08);
+  }
+  .input-icon-wrapper {
+    position: relative;
+  }
+  .input-icon-wrapper i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 0.9rem;
+  }
+  .btn-login {
+    background: #052e16;
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    width: 100%;
+    transition: all 0.2s;
+  }
+  .btn-login:hover {
+    background: #14532d;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+  }
+  .student-link {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+  }
+  .student-link a {
+    color: #002707;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  .student-link a:hover {
+    color: #d97706;
+    text-decoration: underline;
+  }
+  .logo-card {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+  }
+  .logo {
+    height: 95px;
+    width: 95px;
+  }
+  .btn-toggle-pass {
+    position: absolute;
+    right: 2.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: color 0.2s;
+  }
+
+  .btn-toggle-pass:hover {
+    color: #1e3a5f;
+  }
+
+  /* Adjust padding-right para hindi mag-overlap ang text sa eye icon */
+  .login-input {
+    padding-right: 3rem !important; 
+  }
+</style>
+
+<div class="login-wrapper">
+
+  <div class="login-card">
+   <div class="logo-card">
+     <img src="/images/logo.png" alt="" class="logo">
+   </div>
+    <div class="brand">
+      <h2><span>CIT </span>Schedule</h2>
+      <p style="color: rgb(4, 40, 4) !important;">Scheduling Management System</p>
+    </div>
+    
+  <%- include('./alerts') %>
+
+    <form action="/login" method="POST">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <div class="input-icon-wrapper">
+          <i class="fas fa-user"></i>
+          <input type="text" name="username" class="form-control login-input" placeholder="Enter username" required />
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <div class="input-icon-wrapper">
+          <i class="fas fa-lock"></i>
+          <input type="password" name="password" id="passwordInput" class="form-control login-input" placeholder="Enter password" required />
+          <button type="button" id="togglePassword" class="btn-toggle-pass">
+            <i class="fas fa-eye" id="eyeIcon"></i>
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-login">
+        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+      </button>
+    </form>
+
+    <div class="student-link">
+      <p style="font-size: 0.8rem; color: #25352e; margin-bottom: 0.3rem;">Are you a student?</p>
+      <a href="/student-form"><i class="fas fa-external-link-alt me-1"></i>Fill Out Enrollment Form</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const togglePassword = document.querySelector('#togglePassword');
+  const passwordInput = document.querySelector('#passwordInput');
+  const eyeIcon = document.querySelector('#eyeIcon');
+
+  togglePassword.addEventListener('click', function () {
+    // I-toggle ang type attribute
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    
+    // I-toggle ang icon (eye vs eye-slash)
+    eyeIcon.classList.toggle('fa-eye');
+    eyeIcon.classList.toggle('fa-eye-slash');
+  });
+</script>

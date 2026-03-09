@@ -1,0 +1,288 @@
+<% layout('public') %>
+
+<style>
+  .form-wrapper {
+    min-height: 100vh;
+      background: 
+          radial-gradient(circle at 10% 5%, #052e16, transparent 25%),
+          radial-gradient(circle at 10% 10%, #14532d, transparent 30%),
+          radial-gradient(circle at 95% 10%, #14532d, transparent 30%),
+          radial-gradient(circle at 10% 60%, #14532d, transparent 30%);
+      background-blend-mode: lighten;
+      backdrop-filter: blur(10px);
+      background-color: #052e16;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .form-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+  }
+  .form-card .brand {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .form-card .brand h2 { font-weight: 800; color: #0f172a; }
+  .form-card .brand h2 span { color: #f59e0b; }
+  .form-card .brand p { color: #64748b; font-size: 0.85rem; }
+  .section-title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #1e3a5f;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid #f59e0b;
+  }
+  .btn-submit-form {
+    background: #052e16;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+  .btn-submit-form:hover {
+    background: #14532d;
+    color: #fff;
+    transform: translateY(-1px);
+  }
+  .back-link {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .back-link:hover { color: #f59e0b; }
+</style>
+
+<div class="form-wrapper">
+  <%- include('./alerts') %>
+
+  <div class="form-card">
+    <div class="brand">
+      <h2><span>CIT </span>Schedule</h2>
+      <p>Student Information Form</p>
+    </div>
+
+    <form action="/student-form" method="POST">
+      <!-- PERSONAL INFORMATION -->
+      <div class="section-title">Personal Information</div>
+      <div class="row g-3">
+
+        <!-- Row 1: First Name | Middle Name -->
+        <div class="col-md-6">
+          <label class="form-label">First Name <span class="text-danger">*</span></label>
+          <input type="text" name="fname" class="form-control" placeholder="Juan" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Middle Name</label>
+          <input type="text" name="mname" class="form-control" placeholder="Dela" />
+        </div>
+
+        <!-- Row 2: Last Name | Suffix -->
+        <div class="col-md-6">
+          <label class="form-label">Last Name <span class="text-danger">*</span></label>
+          <input type="text" name="lname" class="form-control" placeholder="Cruz" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Suffix</label>
+          <input type="text" name="suffix" class="form-control" placeholder="Jr., Sr., III" />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Email <span class="text-danger">*</span></label>
+          <input type="email" name="email" class="form-control" placeholder="juan@email.com" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Contact Number <span class="text-danger">*</span></label>
+          <input type="text" name="contactNumber" class="form-control" placeholder="09xxxxxxxxx" required />
+        </div>
+        <div class="col-12">
+          <label class="form-label">Address <span class="text-danger">*</span></label>
+          <input type="text" name="address" class="form-control" placeholder="Complete address" required />
+        </div>
+      </div>
+
+      <!-- ACADEMIC INFORMATION -->
+      <div class="section-title">Academic Information</div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Student Number <span class="text-danger">*</span></label>
+          <input type="text" name="studentNumber" id="studentNumber" class="form-control" placeholder="00-0000-000000" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Year Level <span class="text-danger">*</span></label>
+          <select name="yearLevel" class="form-select" required>
+            <option value="">Select</option>
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Student Type <span class="text-danger">*</span></label>
+          <select name="studentType" class="form-select" required>
+            <option value="">Select</option>
+            <option value="regular">Regular</option>
+            <option value="irregular">Irregular</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Semester <span class="text-danger">*</span></label>
+          <select name="semester" class="form-select" required>
+            <option value="">Select</option>
+            <option value="1">1st Semester</option>
+            <option value="2">2nd Semester</option>
+            <option value="3">Summer</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">School Year <span class="text-danger">*</span></label>
+          <input type="text" name="schoolYear" class="form-control" placeholder="0000-0000" required />
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+        <a href="/" class="back-link"><i class="fas fa-arrow-left me-1"></i>Back to Login</a>
+        <button type="submit" class="btn btn-submit-form">
+          <i class="fas fa-paper-plane me-2"></i>Submit Form
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  const form = document.querySelector("form");
+
+  // ===== NAME VALIDATION =====
+  function validateName(input) {
+    input.value = input.value.replace(/[^a-zA-Z\s-]/g, '');
+  }
+
+  document.querySelectorAll("input[name='fname'], input[name='mname'], input[name='lname'], input[name='suffix']")
+    .forEach(input => {
+      input.addEventListener("input", function () {
+        validateName(this);
+      });
+    });
+
+  // ===== CONTACT NUMBER VALIDATION =====
+  const contactInput = document.querySelector("input[name='contactNumber']");
+  contactInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if (this.value.length > 11) {
+      this.value = this.value.slice(0, 11);
+    }
+  });
+
+  // ===== STUDENT NUMBER VALIDATION =====
+  const studentInput = document.getElementById('studentNumber');
+
+  // Only allow numbers and hyphens on keypress
+  studentInput.addEventListener('keypress', function(e) {
+    const char = String.fromCharCode(e.which);
+    if (!/[\d-]/.test(char)) {
+      e.preventDefault();
+    }
+  });
+
+  // Block invalid paste
+  studentInput.addEventListener('paste', function(e) {
+    const paste = (e.clipboardData || window.clipboardData).getData('text');
+    if (!/^[\d-]+$/.test(paste)) {
+      e.preventDefault();
+    }
+  });
+
+  // Auto-format to 00-0000-000000 as user types
+  studentInput.addEventListener('input', function() {
+    let digits = this.value.replace(/\D/g, '').slice(0, 12);
+
+    if (digits.length <= 2) {
+      this.value = digits;
+    } else if (digits.length <= 6) {
+      this.value = digits.slice(0, 2) + '-' + digits.slice(2);
+    } else {
+      this.value = digits.slice(0, 2) + '-' + digits.slice(2, 6) + '-' + digits.slice(6);
+    }
+  });
+
+  // ===== SCHOOL YEAR VALIDATION =====
+  const schoolYearInput = document.querySelector("input[name='schoolYear']");
+
+  // Only allow numbers and hyphens on keypress
+  schoolYearInput.addEventListener('keypress', function(e) {
+    const char = String.fromCharCode(e.which);
+    if (!/[\d-]/.test(char)) {
+      e.preventDefault();
+    }
+  });
+
+  // Block invalid paste
+  schoolYearInput.addEventListener('paste', function(e) {
+    const paste = (e.clipboardData || window.clipboardData).getData('text');
+    if (!/^[\d-]+$/.test(paste)) {
+      e.preventDefault();
+    }
+  });
+
+  // Auto-format to 0000-0000 as user types
+  schoolYearInput.addEventListener('input', function() {
+    let digits = this.value.replace(/\D/g, '').slice(0, 8);
+
+    if (digits.length <= 4) {
+      this.value = digits;
+    } else {
+      this.value = digits.slice(0, 4) + '-' + digits.slice(4);
+    }
+  });
+
+  // ===== FORM SUBMIT VALIDATION =====
+  form.addEventListener("submit", function (e) {
+
+    const contact = contactInput.value;
+    const studentNumber = studentInput.value;
+    const schoolYear = schoolYearInput.value;
+
+    // Contact number must be 11 digits and start with 09
+    const contactPattern = /^09\d{9}$/;
+    if (!contactPattern.test(contact)) {
+      alert("Contact number must be 11 digits and start with 09.");
+      e.preventDefault();
+      return;
+    }
+
+    // Student number format: 00-0000-000000
+    const studentPattern = /^\d{2}-\d{4}-\d{6}$/;
+    if (!studentPattern.test(studentNumber)) {
+      alert("Student number must be in format: 00-0000-000000");
+      e.preventDefault();
+      return;
+    }
+
+    // School year format: 0000-0000
+    const schoolYearPattern = /^\d{4}-\d{4}$/;
+    if (!schoolYearPattern.test(schoolYear)) {
+      alert("School year must be in format: 0000-0000");
+      e.preventDefault();
+      return;
+    }
+
+  });
+
+});
+</script>

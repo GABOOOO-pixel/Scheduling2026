@@ -1,0 +1,97 @@
+<% layout('main') %>
+
+<%- include('./sidebar') %>
+
+<div class="main-content">
+  <%- include('./topbar') %>
+  <%- include('./alerts') %>
+
+  <div class="page-content">
+    <div class="card-custom">
+      <div class="card-header">
+        <span><i class="fas fa-user-graduate me-2"></i>Students</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table data-table mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Student No.</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Year</th>
+                <th>Type</th>
+                <th>Sem / SY</th>
+                <th>Section</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (typeof students !== 'undefined' && students.length > 0) { %>
+                <% students.forEach((s, i) => { %>
+                <tr>
+                  <td><%= i + 1 %></td>
+                  <td><strong><%= s.studentNumber %></strong></td>
+                  <td><%= s.lname %>, <%= s.fname %> <%= s.mname || '' %></td>
+                  <td><%= s.email %></td>
+                  <td><%= s.yearLevel %></td>
+                  <td>
+                    <span class="badge badge-role badge-<%= s.studentType %>"><%= s.studentType %></span>
+                  </td>
+                  <td>Sem <%= s.semester %><br/><small class="text-muted"><%= s.schoolYear %></small></td>
+                  <td><%= s.sectionId ? s.sectionId.sectionName : '<em>Unassigned</em>' %></td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#assignSection<%= s._id %>" title="Assign Section">
+                        <i class="fas fa-layer-group"></i>
+                      </button>
+                      <form action="/students/delete/<%= s._id %>" method="POST" onsubmit="return confirm('Archive this student?')">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Archive">
+                          <i class="fas fa-archive"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- ASSIGN SECTION MODAL -->
+                <div class="modal fade" id="assignSection<%= s._id %>" tabindex="-1">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" style="font-size: 0.9rem;">Assign Section - <%= s.lname %></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <form action="/students/assign-section/<%= s._id %>" method="POST">
+                        <div class="modal-body">
+                          <label class="form-label">Section</label>
+                          <select name="sectionId" class="form-select" required>
+                            <option value="">-- Select --</option>
+                            <% if (typeof sections !== 'undefined') { %>
+                              <% sections.forEach(sec => { %>
+                                <option value="<%= sec._id %>" <%= s.sectionId && s.sectionId._id.toString() === sec._id.toString() ? 'selected' : '' %>>
+                                  <%= sec.sectionName %> (Year <%= sec.yearLevel %>)
+                                </option>
+                              <% }) %>
+                            <% } %>
+                          </select>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-accent btn-sm"><i class="fas fa-check me-1"></i>Assign</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <% }) %>
+              <% } else { %>
+                <tr><td colspan="10" class="text-center text-muted py-4">No students found.</td></tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

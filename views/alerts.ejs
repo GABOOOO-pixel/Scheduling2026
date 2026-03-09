@@ -1,0 +1,36 @@
+
+
+<% if (typeof success !== 'undefined' && success) { %>
+  <div class="alert alert-success alert-floating d-flex align-items-center gap-2">
+    <i class="fas fa-check-circle"></i>
+    <span><%= success %></span>
+  </div>
+<% } %>
+
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="alert alert-danger alert-floating d-flex align-items-center gap-2">
+    <i class="fas fa-exclamation-circle"></i>
+    <span><%= error %></span>
+  </div>
+<% } %>
+
+<% if (typeof warning !== 'undefined' && warning) { %>
+  <div class="alert alert-warning alert-floating d-flex align-items-center gap-2">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span><%= warning %></span>
+  </div>
+<% } %>
+
+<% if (typeof denied !== 'undefined' && denied) { %>
+  <div class="alert alert-danger alert-floating d-flex align-items-center gap-2">
+    <i class="fas fa-ban"></i>
+    <span><%= denied %></span>
+  </div>
+<% } %>
+
+<% if (typeof message !== 'undefined' && message) { %>
+  <div class="alert alert-info alert-floating d-flex align-items-center gap-2">
+    <i class="fas fa-info-circle"></i>
+    <span><%= message %></span>
+  </div>
+<% } %>

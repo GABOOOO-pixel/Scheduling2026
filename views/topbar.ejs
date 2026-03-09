@@ -1,0 +1,19 @@
+<nav class="top-navbar">
+  <div class="d-flex align-items-center gap-3">
+    <button class="btn-sidebar-toggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    <span class="page-title"><%= typeof pageTitle !== 'undefined' ? pageTitle : title %></span>
+  </div>
+  <div class="user-info">
+    <div class="d-none d-md-block text-end">
+      <div style="font-size: 0.85rem; font-weight: 600;"><%= user ? user.username : 'Guest' %></div>
+      <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+        <%= user ? user.role.replace('_', ' ') : '' %>
+      </div>
+    </div>
+    <div class="user-avatar">
+      <%= user ? user.username.charAt(0).toUpperCase() : '?' %>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,73 @@
+<% layout('layouts/main') %>
+
+<%- include('../partials/sidebar') %>
+
+<div class="main-content">
+  <%- include('../partials/topbar') %>
+  <%- include('../partials/alerts') %>
+
+  <div class="page-content">
+    <div class="mb-4">
+      <h5 style="font-weight: 700;"><i class="fas fa-calendar-check me-2"></i>My Teaching Schedule</h5>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Your assigned class schedules for the current term.</p>
+    </div>
+
+    <!-- SCHEDULE BY DAY -->
+    <% const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+       const schedData = typeof facultySchedules !== 'undefined' ? facultySchedules : [];
+    %>
+
+    <% if (schedData.length === 0) { %>
+      <div class="card-custom">
+        <div class="card-body text-center py-5">
+          <i class="fas fa-calendar-times" style="font-size: 3rem; color: var(--text-muted);"></i>
+          <h5 class="mt-3" style="font-weight: 700;">No Schedule Assigned</h5>
+          <p style="color: var(--text-muted);">You currently have no assigned schedules. Contact your admin.</p>
+        </div>
+      </div>
+    <% } else { %>
+      <% days.forEach(day => { %>
+        <% const dayScheds = schedData.filter(s => s.day === day); %>
+        <% if (dayScheds.length > 0) { %>
+        <div class="card-custom mb-3">
+          <div class="card-header">
+            <span><i class="fas fa-calendar-day me-2"></i><%= day %></span>
+            <span class="badge bg-primary rounded-pill"><%= dayScheds.length %> class<%= dayScheds.length > 1 ? 'es' : '' %></span>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Subject</th>
+                    <th>Section</th>
+                    <th>Room</th>
+                    <th>Year / Sem</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% dayScheds.forEach(sched => { %>
+                  <tr>
+                    <td><strong><%= sched.timeFrom %> - <%= sched.timeTo %></strong></td>
+                    <td>
+                      <strong><%= sched.subjectId ? sched.subjectId.subjectCode : 'N/A' %></strong><br/>
+                      <small class="text-muted"><%= sched.subjectId ? sched.subjectId.subjectName : '' %></small>
+                    </td>
+                    <td><%= sched.sectionId ? sched.sectionId.sectionName : 'N/A' %></td>
+                    <td><%= sched.roomId ? sched.roomId.roomNumber : 'TBA' %></td>
+                    <td>Year <%= sched.yearLevel %> / Sem <%= sched.semester %><br/><small class="text-muted"><%= sched.schoolYear %></small></td>
+                    <td><span class="badge badge-role badge-<%= sched.status %>"><%= sched.status %></span></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
