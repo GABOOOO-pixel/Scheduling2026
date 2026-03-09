@@ -114,15 +114,15 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Room Number <span class="text-danger">*</span></label>
-              <input type="text" name="roomNumber" class="form-control" placeholder="RM-101" required />
+              <input type="text" name="roomNumber" class="form-control" placeholder="404" required />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6"style="display: none;">
               <label class="form-label">Building</label>
-              <input type="text" name="building" class="form-control" placeholder="South Building" />
+              <input type="text" name="building" class="form-control" placeholder="South"value="South" />
             </div>
             <div class="col-md-6">
               <label class="form-label">Capacity</label>
-              <input type="number" name="capacity" class="form-control" min="1" placeholder="40" />
+              <input type="number" name="capacity" class="form-control" min="1" placeholder="50" />
             </div>
           </div>
         </div>
@@ -134,3 +134,14 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('input', function (e) {
+    if (e.target && e.target.name === 'capacity') {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 2);
+      if (Number(e.target.value) > 50) {
+        e.target.value = '50';
+      }
+    }
+  });
+</script>
