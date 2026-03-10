@@ -17,7 +17,7 @@ const isSuperAdmin = (req, res, next) => {
     return next();
   }
   req.session.denied = "Access denied! Super Admin only.";
-  return res.redirect("/h");
+  return res.redirect("/");
 };
 
 // =============================================
@@ -32,7 +32,7 @@ const isAdmin = (req, res, next) => {
     return next();
   }
   req.session.denied = "Access denied! Admin only.";
-  return res.redirect("/h");
+  return res.redirect("/");
 };
 
 // =============================================
@@ -47,7 +47,7 @@ const isFaculty = (req, res, next) => {
     return next();
   }
   req.session.denied = "Access denied! Faculty only.";
-  return res.redirect("/h");
+  return res.redirect("/");
 };
 
 // =============================================
@@ -55,7 +55,7 @@ const isFaculty = (req, res, next) => {
 // =============================================
 const isGuest = (req, res, next) => {
   if (req.session && req.session.user) {
-    return res.redirect("/h");
+    return res.redirect("/");
   }
   return next();
 };
