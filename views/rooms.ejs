@@ -136,12 +136,20 @@
 </div>
 
 <script>
+  // Capacity — numbers only, max 50
   document.addEventListener('input', function (e) {
     if (e.target && e.target.name === 'capacity') {
       e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 2);
       if (Number(e.target.value) > 50) {
         e.target.value = '50';
       }
+    }
+  });
+
+  // Room Number — numbers only, max 3 digits
+  document.addEventListener('input', function (e) {
+    if (e.target && e.target.name === 'roomNumber') {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 3);
     }
   });
 </script>
