@@ -14,18 +14,29 @@
             <span><i class="fas fa-user-circle me-2"></i>My Profile</span>
           </div>
           <div class="card-body">
-            <!-- PROFILE INFO -->
-            <div class="text-center mb-4">
-              <div class="user-avatar mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">
-                <%= user ? user.username.charAt(0).toUpperCase() : '?' %>
+
+            <% if (!user) { %>
+              <p class="text-center text-muted">No user data available.</p>
+            <% } else { %>
+
+              <!-- PROFILE INFO -->
+              <div class="text-center mb-4">
+                <div class="user-avatar mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">
+                  <%= user.username.charAt(0).toUpperCase() %>
+                </div>
+                <h5 style="font-weight: 700;"><%= user.username %></h5>
+                <span class="badge badge-role badge-<%= user.role %>">
+                  <%= user.role.replace(/_/g, ' ') %>
+                </span>
               </div>
-              <h5 style="font-weight: 700;"><%= user ? user.username : '' %></h5>
-              <span class="badge badge-role" style="
-                <% if (user && user.role === 'super_admin') { %>background: #fce7f3; color: #9d174d;
-                <% } else if (user && user.role === 'admin') { %>background: #dbeafe; color: #1e40af;
-                <% } else { %>background: #d1fae5; color: #065f46;<% } %>
-              "><%= user ? user.role.replace('_', ' ') : '' %></span>
-            </div>
+
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
             <hr />
 
