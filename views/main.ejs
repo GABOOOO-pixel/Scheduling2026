@@ -411,6 +411,7 @@
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
   </style>
   <%- typeof extraHead !== 'undefined' ? extraHead : '' %>
+  <meta name="csrf-token" content="<%= csrfToken %>">
 </head>
 <body>
   <%- body %>
@@ -439,38 +440,47 @@
     }, 4000);
 
     // Init DataTables
-    $(document).ready(function () {
-      $('.data-table').DataTable({
-        pageLength: 10,
-        // Nagdaragdag ng choices sa dropdown (10, 25, 50, o Lahat)
-        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        responsive: true,
-        language: {
-          // Nagdagdag tayo ng extra space sa "Show _MENU_" para hindi dikit ang text
-          lengthMenu: "Show &nbsp; _MENU_",
-          search: "",
-          searchPlaceholder: "Search...",
-        },
-        // HETO ANG SECRET SAUCE:
-        "initComplete": function(settings, json) {
-            // Hahanapin ang dropdown sa loob ng length menu
-            const menuDropdown = $('.dataTables_length select');
-            
-            // Pilitin ang style sa mismong element (Inline Style)
-            menuDropdown.css({
-                'width': '200px',
-                'min-width': '200px',
-                'max-width': '200px',
-                'padding-right': '2rem',
-                'display': 'inline-block'
-            });
+    // Init DataTables
+$(document).ready(function () {
+  $('.data-table').DataTable({
+    pageLength: 10,
+    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    responsive: true,
+    language: {
+      lengthMenu: "Show &nbsp; _MENU_",
+      search: "",
+      searchPlaceholder: "Search...",
+    },
+    initComplete: function(settings, json) {
+      const menuDropdown = $('.dataTables_length select');
+      menuDropdown.removeAttr('style').attr('style', 'width: 200px !important; min-width: 200px !important;');
+    }
+  });  // ← closes DataTable({
 
-            // Alisin ang kahit anong automatic width attribute na nilalagay ng DT
-            menuDropdown.removeAttr('style').attr('style', 'width: 200px !important; min-width: 200px !important;');
-        }
+  // Clickjacking protection
+  if (window.top !== window.self) {
+    alert("Clickjacking detected!");
+    window.top.location = window.location;
+  }
+
+  // CSRF protection
+  const tokenMeta = document.querySelector('meta[name="csrf-token"]');
+  const csrfToken = tokenMeta ? tokenMeta.content : null;
+
+  if (csrfToken) {
+    document.querySelectorAll("form").forEach(form => {
+      form.addEventListener("submit", function(e) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "_csrf";
+        input.value = csrfToken;
+        this.appendChild(input);
       });
     });
-  </script>
-  <%- typeof extraScripts !== 'undefined' ? extraScripts : '' %>
-</body>
+  }
+
+});  // ← closes $(document).ready(
+  
+    </script>
+  </body>
 </html>

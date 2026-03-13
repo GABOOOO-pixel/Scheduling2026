@@ -336,7 +336,7 @@ app.get('/student-dashboard', isStudentAuth, async (req, res) => {
         .populate('sectionId')
         .populate('roomId')
         .lean();
-/
+//
       const dayOrder = { Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6, Sunday: 7 };
       studentSchedules.sort((a, b) => (dayOrder[a.day] || 8) - (dayOrder[b.day] || 8) || a.timeFrom.localeCompare(b.timeFrom));
     }
