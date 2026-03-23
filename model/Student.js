@@ -96,8 +96,7 @@ const studentSchema = new mongoose.Schema(
         validator: function (v) {
           return /^(09|\+639)\d{9}$/.test(v);
         },
-        message:
-          "Contact number must be a valid PH number (e.g. 09XXXXXXXXX or +639XXXXXXXXX)",
+        message: "Contact number must be a valid PH number (e.g. 09XXXXXXXXX or +639XXXXXXXXX)",
       },
     },
     yearLevel: {
@@ -157,6 +156,17 @@ const studentSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    // ── Password Reset Fields ──────────────────────
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
+    },
+    // ──────────────────────────────────────────────
   },
   {
     timestamps: true,

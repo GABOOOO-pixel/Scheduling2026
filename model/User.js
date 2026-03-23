@@ -11,19 +11,15 @@ const userSchema = new mongoose.Schema(
       maxlength: [30, "Username must not exceed 30 characters"],
       validate: {
         validator: function (v) {
-          // Alphanumeric, underscores, and hyphens only
           return /^[a-zA-Z0-9_-]+$/.test(v);
         },
-        message:
-          "Username may only contain letters, numbers, underscores, and hyphens",
+        message: "Username may only contain letters, numbers, underscores, and hyphens",
       },
     },
     password: {
       type: String,
       required: [true, "Password is required"],
       minlength: [8, "Password must be at least 8 characters"],
-      // Note: validate password strength BEFORE hashing (in controller/middleware),
-      // not here, since hashed passwords won't match plain-text rules.
     },
     fname: {
       type: String,
@@ -51,6 +47,20 @@ const userSchema = new mongoose.Schema(
         message: "Last name must contain letters only",
       },
     },
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      sparse: true,       // ← allows null/missing across multiple docs
+      default: null,      // ← won't error if not provided
+      validate: {
+        validator: function (v) {
+          if (!v) return true;
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        },
+        message: "Invalid email format",
+      },
+    },
     role: {
       type: String,
       required: [true, "Role is required"],
@@ -76,6 +86,17 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    // ── Password Reset Fields ──────────────────────
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
+    },
+    // ──────────────────────────────────────────────
   },
   {
     timestamps: true,

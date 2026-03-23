@@ -23,6 +23,8 @@ try {
   }
 }
 const helmet = require('helmet');
+const cors = require('cors');                              
+const apiRoutes = require('./apiRoutes');                  
 
 // =============================================
 // MODELS
@@ -84,6 +86,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());                                           
+app.use('/api', apiRoutes);
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: '0', etag: true }));
 
 app.use(session({
@@ -143,6 +147,11 @@ app.use((req, res, next) => {
   next();
 });
 
+const {
+  getForgotPassword,
+  postForgotPassword,
+} = require('./controllers/forgotPasswordController');
+
 
 // =============================================================================
 //  PUBLIC ROUTES (No auth required)
@@ -151,6 +160,12 @@ app.use((req, res, next) => {
 // ---------- LOGIN PAGE ----------
 app.get('/', isGuest, (req, res) => {
   return res.render('index', { title: 'Login' });
+});
+
+app.get('/test-db', async (req, res) => {
+  const dbName = mongoose.connection.db.databaseName;
+  const students = await Student.find({}).select('email fname').lean();
+  return res.send(JSON.stringify({ dbName, students }, null, 2));
 });
 
 // ---------- /login redirect — in case any link/form points to /login ----------
@@ -201,6 +216,31 @@ app.get('/logout', (req, res) => {
     return res.redirect('/');
   });
 });
+
+app.get('/test-token-debug', async (req, res) => {
+  const now = new Date();
+  const nowWithOffset = new Date(Date.now() + 8 * 60 * 60 * 1000);
+  
+  const users = await User.find({ resetPasswordToken: { $ne: null } })
+    .select('username resetPasswordToken resetPasswordExpires')
+    .lean();
+  const students = await Student.find({ resetPasswordToken: { $ne: null } })
+    .select('fname resetPasswordToken resetPasswordExpires')
+    .lean();
+
+  return res.send(JSON.stringify({
+    serverTimeNow: now,
+    serverTimeWithOffset: nowWithOffset,
+    users,
+    students
+  }, null, 2));
+});
+
+// ---------- FORGOT / RESET PASSWORD ----------
+// ---------- FORGOT / RESET PASSWORD ----------
+// ---------- FORGOT PASSWORD ----------
+app.get('/fg', getForgotPassword);
+app.post('/fg', postForgotPassword);
 
 // ---------- STUDENT ONLINE FORM (Registration) ----------
 app.get('/student-form', (req, res) => {
@@ -261,12 +301,19 @@ app.get('/student-login', isStudentGuest, (req, res) => {
 });
 
 // ---------- STUDENT LOGIN POST ----------
+// ---------- STUDENT LOGIN POST ----------
 app.post('/student-login', isStudentGuest, async (req, res) => {
   try {
     const { studentNumber, password } = req.body;
     const student = await Student.findOne({ studentNumber, isArchive: false, status: 'active' });
 
     if (!student) {
+      req.session.error = 'Invalid student number or password!';
+      return res.redirect('/student-login');
+    }
+
+    // ← ADD THIS
+    if (!student.password) {
       req.session.error = 'Invalid student number or password!';
       return res.redirect('/student-login');
     }
@@ -761,9 +808,34 @@ app.post('/archive/restore/:model/:id', isAuth, isSuperAdmin, async (req, res) =
 //  PROFILE & CHANGE PASSWORD
 // =============================================================================
 
-app.get('/profile', isAuth, (req, res) => {
-  res.locals.active = 'profile';
-  return res.render('profile', { title: 'Profile', pageTitle: 'My Profile' });
+// app.get('/profile', isAuth, (req, res) => {
+//   res.locals.active = 'profile';
+//   return res.render('profile', { title: 'Profile', pageTitle: 'My Profile' });
+// });
+
+app.get('/profile', isAuth, async (req, res) => {
+  try {
+    const fullUser = await User.findById(req.session.user._id)
+      .populate('teacherId')
+      .lean();
+
+    console.log('🔍 fullUser:', JSON.stringify(fullUser, null, 2)); // ADD THIS
+
+    res.locals.active = 'profile';
+    return res.render('profile', { title: 'Profile', pageTitle: 'My Profile', fullUser });
+  } catch (err) {
+    console.error('❌ Profile error:', err.message);
+    req.session.error = 'Failed to load profile.';
+    return res.redirect('/dashboard');
+  }
+});
+
+app.get('/fix-superadmin-email', async (req, res) => {
+  const result = await User.updateOne(
+    { _id: '69944d8a8ab52ae98bfa7f23' },
+    { $set: { email: 'rgabrielayroso1@gmail.com' } }
+  );
+  return res.send('✅ Done: ' + JSON.stringify(result));
 });
 
 app.post('/profile/change-password', isAuth, async (req, res) => {
@@ -798,6 +870,7 @@ app.post('/profile/change-password', isAuth, async (req, res) => {
     return res.redirect('/profile');
   }
 });
+
 
 
 // =============================================================================
