@@ -5,9 +5,9 @@ const Teacher = require("../model/Teacher");
 const Student = require("../model/Student");
 const { sendPasswordResetEmail } = require("../utils/mailer");
 
-// Generate random temp password: e.g. "Tmp@a3Kx9"
+// Generate random temp password
 const generateTempPassword = () => {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#!';
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
   let pass = '';
   for (let i = 0; i < 10; i++) {
     pass += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -44,6 +44,7 @@ const postForgotPassword = async (req, res) => {
 
     if (user) {
       const tempPass = generateTempPassword();
+      console.log('🔑 Temp password (user):', tempPass);
       user.password = await bcrypt.hash(tempPass, 10);
       await user.save({ validateBeforeSave: false });
       await sendTempPasswordEmail(normalizedEmail, tempPass);
@@ -62,6 +63,7 @@ const postForgotPassword = async (req, res) => {
 
       if (linkedUser) {
         const tempPass = generateTempPassword();
+        console.log('🔑 Temp password (faculty):', tempPass);
         linkedUser.password = await bcrypt.hash(tempPass, 10);
         await linkedUser.save({ validateBeforeSave: false });
         await sendTempPasswordEmail(normalizedEmail, tempPass);
@@ -77,6 +79,7 @@ const postForgotPassword = async (req, res) => {
 
     if (student) {
       const tempPass = generateTempPassword();
+      console.log('🔑 Temp password (student):', tempPass);
       student.password = await bcrypt.hash(tempPass, 10);
       await student.save({ validateBeforeSave: false });
       await sendTempPasswordEmail(normalizedEmail, tempPass, true);
