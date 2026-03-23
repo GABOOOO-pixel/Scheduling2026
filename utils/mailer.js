@@ -1,24 +1,18 @@
-const nodemailer = require("nodemailer");
+const sgMail = require('@sendgrid/mail');
 
-console.log('MAIL_USER:', process.env.MAIL_USER);
-console.log('MAIL_PASS:', process.env.MAIL_PASS ? 'EXISTS' : 'MISSING');
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // @param toEmail     - recipient
 // @param tempPass    - generated temporary password
 // @param loginPath   - '/student-login' or '/'
 const sendPasswordResetEmail = async (toEmail, tempPass, loginPath = '/') => {
-  const mailOptions = {
-    from: `"CIT Schedule" <${process.env.MAIL_USER}>`,
+  const msg = {
     to: toEmail,
-    subject: "Your Temporary Password – CIT Schedule",
+    from: {
+      email: process.env.SENDGRID_FROM_EMAIL, // must be verified in SendGrid
+      name: 'CIT Schedule',
+    },
+    subject: 'Your Temporary Password – CIT Schedule',
     html: `
       <!DOCTYPE html>
       <html>
@@ -68,12 +62,15 @@ const sendPasswordResetEmail = async (toEmail, tempPass, loginPath = '/') => {
     `,
   };
 
-try {
-    await transporter.sendMail(mailOptions);
+  try {
+    await sgMail.send(msg);
     console.log('✅ Temp password email sent to:', toEmail);
     console.log('🔑 Temp password:', tempPass);
   } catch (err) {
-    console.error('❌ Mailer error:', err.message);
+    console.error('❌ SendGrid error:', err.message);
+    if (err.response) {
+      console.error('❌ SendGrid response:', JSON.stringify(err.response.body));
+    }
     throw err;
   }
 };
