@@ -68,9 +68,10 @@ const sendPasswordResetEmail = async (toEmail, tempPass, loginPath = '/') => {
     `,
   };
 
-  try {
+try {
     await transporter.sendMail(mailOptions);
     console.log('✅ Temp password email sent to:', toEmail);
+    console.log('🔑 Temp password:', tempPass);
   } catch (err) {
     console.error('❌ Mailer error:', err.message);
     throw err;
