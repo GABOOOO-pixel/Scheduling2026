@@ -871,6 +871,38 @@ app.post('/profile/change-password', isAuth, async (req, res) => {
   }
 });
 
+// ---------- STUDENT CHANGE PASSWORD ----------
+app.post('/student/change-password', isStudentAuth, async (req, res) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (newPassword !== confirmPassword) {
+      req.session.error = 'New passwords do not match!';
+      return res.redirect('/student-dashboard');
+    }
+    if (newPassword.length < 6) {
+      req.session.error = 'Password must be at least 6 characters!';
+      return res.redirect('/student-dashboard');
+    }
+
+    const student = await Student.findById(req.session.student._id);
+    const match = await bcrypt.compare(currentPassword, student.password);
+    if (!match) {
+      req.session.error = 'Current password is incorrect!';
+      return res.redirect('/student-dashboard');
+    }
+
+    student.password = await bcrypt.hash(newPassword, 10);
+    await student.save();
+
+    req.session.success = 'Password changed successfully!';
+    return res.redirect('/student-dashboard');
+  } catch (err) {
+    console.error('❌ Student change password error:', err.message);
+    req.session.error = 'Failed to change password.';
+    return res.redirect('/student-dashboard');
+  }
+});
 
 
 // =============================================================================
