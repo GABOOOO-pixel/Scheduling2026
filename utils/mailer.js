@@ -2,14 +2,11 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// @param toEmail     - recipient
-// @param tempPass    - generated temporary password
-// @param loginPath   - '/student-login' or '/'
 const sendPasswordResetEmail = async (toEmail, tempPass, loginPath = '/') => {
   const msg = {
     to: toEmail,
     from: {
-      email: process.env.SENDGRID_FROM_EMAIL, // must be verified in SendGrid
+      email: process.env.SENDGRID_FROM_EMAIL,
       name: 'CIT Schedule',
     },
     subject: 'Your Temporary Password – CIT Schedule',

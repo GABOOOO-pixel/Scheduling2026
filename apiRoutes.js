@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
 
-// Import your models
 const User = require('./model/User');
 const Student = require('./model/Student');
 const Schedule = require('./model/Schedule');
@@ -14,7 +13,6 @@ const Teacher = require('./model/Teacher');
 const Section = require('./model/Section');
 const Room = require('./model/Room');
 
-// Verify token middleware
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -65,16 +63,30 @@ router.post('/student-login', async (req, res) => {
     }
 });
 
-// Schedules
-router.get('/schedules', verifyToken, async (req, res) => {
+// Student Schedule (FIXED - only one, no duplicate)
+router.get('/student-schedule', verifyToken, async (req, res) => {
     try {
-        const schedules = await Schedule.find({ status: { $ne: 'archived' } })
-            .populate('subjectId').populate('teacherId')
-            .populate('sectionId').populate('roomId');
+        const student = await Student.findById(req.user.id)
+            .populate('sectionId');
+        if (!student) return res.status(404).json({ message: 'Student not found' });
+        const schedules = await Schedule.find({
+            sectionId: student.sectionId?._id || student.sectionId,
+            yearLevel: student.yearLevel,
+            semester: student.semester,
+            schoolYear: student.schoolYear,
+            status: { $ne: 'archived' }
+        })
+        .populate('subjectId')
+        .populate('teacherId')
+        .populate('roomId')
+        .populate('sectionId');
         res.json(schedules);
-    } catch (e) { res.status(500).json({ message: e.message }); }
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 });
 
+// Schedules
 router.post('/schedules', verifyToken, async (req, res) => {
     try {
         const schedule = new Schedule(req.body);
@@ -176,22 +188,6 @@ router.get('/my-schedule', verifyToken, async (req, res) => {
             teacherId: req.user.id,
             status: { $ne: 'archived' }
         }).populate('subjectId').populate('sectionId').populate('roomId');
-        res.json(schedules);
-    } catch (e) { res.status(500).json({ message: e.message }); }
-});
-
-// Student Schedule
-router.get('/student-schedule', verifyToken, async (req, res) => {
-    try {
-        const student = await Student.findById(req.user.id);
-        if (!student) return res.status(404).json({ message: 'Student not found' });
-        const schedules = await Schedule.find({
-            sectionId: student.sectionId,
-            yearLevel: student.yearLevel,
-            semester: student.semester,
-            schoolYear: student.schoolYear,
-            status: { $ne: 'archived' }
-        }).populate('subjectId').populate('teacherId').populate('roomId');
         res.json(schedules);
     } catch (e) { res.status(500).json({ message: e.message }); }
 });
