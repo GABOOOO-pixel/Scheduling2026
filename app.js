@@ -447,7 +447,7 @@ app.post('/schedule/add', isAuth, isAdmin, async (req, res) => {
   return res.redirect('/schedule');
 });
 
-app.post('/schedule/update/:id', isAuth, isAdmin, async (req, res) => {
+app.post('/schedule/edit/:id', isAuth, isAdmin, async (req, res) => {
   try {
     const { subjectId, teacherId, sectionId, roomId, day, timeFrom, timeTo, yearLevel, semester, schoolYear, status } = req.body;
 
