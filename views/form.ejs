@@ -290,26 +290,38 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Password match validation
-    const password = document.getElementById('passwordField').value;
-    const confirmPassword = document.getElementById('confirmPasswordField').value;
-    if (password.length < 6) {
-      alert("Password must be at least 6 characters.");
-      e.preventDefault();
-      return;
-    }
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      e.preventDefault();
-      return;
-    }
+const password = document.getElementById('passwordField').value;
+const confirmPassword = document.getElementById('confirmPasswordField').value;
 
-    // School year format: 0000-0000
-    const schoolYearPattern = /^\d{4}-\d{4}$/;
-    if (!schoolYearPattern.test(schoolYear)) {
-      alert("School year must be in format: 0000-0000");
-      e.preventDefault();
-      return;
-    }
+const passwordRules = [
+  { test: password.length >= 8,              msg: "Password must be at least 8 characters." },
+  { test: /[A-Z]/.test(password),            msg: "Password must contain at least 1 uppercase letter." },
+  { test: /[0-9]/.test(password),            msg: "Password must contain at least 1 number." },
+  { test: /[a-z]/.test(password),            msg: "Password must contain at least 1 lowercase letter." },
+  { test: /[^A-Za-z0-9]/.test(password),     msg: "Password must contain at least 1 special character (e.g. @, #, !)." },
+];
+
+for (const rule of passwordRules) {
+  if (!rule.test) {
+    alert(rule.msg);
+    e.preventDefault();
+    return;
+  }
+}
+
+if (password !== confirmPassword) {
+  alert("Passwords do not match!");
+  e.preventDefault();
+  return;
+}
+
+// School year format: 0000-0000
+const schoolYearPattern = /^\d{4}-\d{4}$/;
+if (!schoolYearPattern.test(schoolYear)) {
+  alert("School year must be in format: 0000-0000");
+  e.preventDefault();
+  return;
+}
 
   });
 
