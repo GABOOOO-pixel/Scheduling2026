@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo').default || require('connect-mongo');
 const engine = require('ejs-mate');
 const flash = require('connect-flash');
+const { checkOverlap } = require('./scheduleOverlapHelper');
 // bcrypt fallback — tries bcryptjs first, then bcrypt, then plain compare (dev only)
 let bcrypt;
 try {
@@ -423,6 +424,13 @@ app.get('/schedule', isAuth, isAdmin, isSchedule, isSubject, isTeacher, isSectio
 app.post('/schedule/add', isAuth, isAdmin, async (req, res) => {
   try {
     const { subjectId, teacherId, sectionId, roomId, day, timeFrom, timeTo, yearLevel, semester, schoolYear } = req.body;
+
+    const conflicts = await checkOverlap({ subjectId, teacherId, sectionId, roomId, day, timeFrom, timeTo, semester, schoolYear });
+    if (conflicts.length > 0) {
+      req.session.error = conflicts.join(' | ');
+      return res.redirect('/schedule');
+    }
+
     await Schedule.create({
       subjectId, teacherId, sectionId,
       roomId: roomId || null,
@@ -439,22 +447,30 @@ app.post('/schedule/add', isAuth, isAdmin, async (req, res) => {
   return res.redirect('/schedule');
 });
 
-app.get('/schedule/edit/:id', isAuth, isAdmin, isSubject, isTeacher, isSection, isRoom, async (req, res) => {
+app.post('/schedule/update/:id', isAuth, isAdmin, async (req, res) => {
   try {
-    const schedule = await Schedule.findById(req.params.id)
-      .populate('subjectId').populate('teacherId')
-      .populate('sectionId').populate('roomId').lean();
-    if (!schedule) {
-      req.session.error = 'Schedule not found.';
-      return res.redirect('/schedule');
+    const { subjectId, teacherId, sectionId, roomId, day, timeFrom, timeTo, yearLevel, semester, schoolYear, status } = req.body;
+
+    const conflicts = await checkOverlap({ subjectId, teacherId, sectionId, roomId, day, timeFrom, timeTo, semester, schoolYear, excludeId: req.params.id });
+    if (conflicts.length > 0) {
+      req.session.error = conflicts.join(' | ');
+      return res.redirect(`/schedule/edit/${req.params.id}`);
     }
-    res.locals.active = 'schedule';
-    return res.render('schedule-edit', { title: 'Edit Schedule', pageTitle: 'Edit Schedule', schedule });
+
+    await Schedule.findByIdAndUpdate(req.params.id, {
+      subjectId, teacherId, sectionId,
+      roomId: roomId || null,
+      day, timeFrom, timeTo,
+      yearLevel: Number(yearLevel),
+      semester: Number(semester),
+      schoolYear, status
+    });
+    req.session.success = 'Schedule updated successfully!';
   } catch (err) {
-    console.error('❌ Edit schedule error:', err.message);
-    req.session.error = 'Failed to load schedule.';
-    return res.redirect('/schedule');
+    console.error('❌ Update schedule error:', err.message);
+    req.session.error = 'Failed to update schedule.';
   }
+  return res.redirect('/schedule');
 });
 
 app.post('/schedule/update/:id', isAuth, isAdmin, async (req, res) => {
