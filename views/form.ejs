@@ -1,6 +1,11 @@
 <% layout('public') %>
 
 <style>
+  .req-item { color: #94a3b8; transition: color 0.2s; padding: 1px 0; }
+.req-item.passed { color: #10b981; }
+.req-item.failed { color: #ef4444; }
+.req-item.passed i::before { content: '\f058'; } /* fa-check-circle */
+.req-item.failed i::before { content: '\f057'; } /* fa-times-circle */
   .form-wrapper {
     min-height: 100vh;
       background: 
@@ -159,12 +164,20 @@
       <div class="section-title">Account Credentials</div>
       <div class="row g-3">
         <div class="col-md-6">
-          <label class="form-label">Password <span class="text-danger">*</span></label>
-          <input type="password" name="password" id="passwordField" class="form-control" placeholder="Min. 6 characters" required minlength="6" />
-        </div>
+  <label class="form-label">Password <span class="text-danger">*</span></label>
+  <input type="password" name="password" id="passwordField" class="form-control" placeholder="Min. 8 characters" required minlength="8" />
+  <!-- Live requirements -->
+  <div style="margin-top:0.5rem;font-size:0.75rem;">
+    <div id="req-length"  class="req-item"><i class="fas fa-circle me-1"></i>At least 8 characters</div>
+    <div id="req-upper"   class="req-item"><i class="fas fa-circle me-1"></i>At least 1 uppercase letter</div>
+    <div id="req-lower"   class="req-item"><i class="fas fa-circle me-1"></i>At least 1 lowercase letter</div>
+    <div id="req-number"  class="req-item"><i class="fas fa-circle me-1"></i>At least 1 number</div>
+    <div id="req-special" class="req-item"><i class="fas fa-circle me-1"></i>At least 1 special character (@, #, !...)</div>
+  </div>
+</div>
         <div class="col-md-6">
           <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
-          <input type="password" name="confirmPassword" id="confirmPasswordField" class="form-control" placeholder="Re-enter password" required minlength="6" />
+          <input type="password" name="confirmPassword" id="confirmPasswordField" class="form-control" placeholder="Re-enter password" required minlength="8" />
         </div>
       </div>
 
@@ -203,6 +216,31 @@ document.addEventListener('DOMContentLoaded', function () {
       this.value = this.value.slice(0, 11);
     }
   });
+
+  // ===== LIVE PASSWORD REQUIREMENTS =====
+const passwordField = document.getElementById('passwordField');
+
+const reqMap = [
+  { id: 'req-length',  test: v => v.length >= 8 },
+  { id: 'req-upper',   test: v => /[A-Z]/.test(v) },
+  { id: 'req-lower',   test: v => /[a-z]/.test(v) },
+  { id: 'req-number',  test: v => /[0-9]/.test(v) },
+  { id: 'req-special', test: v => /[^A-Za-z0-9]/.test(v) },
+];
+
+passwordField.addEventListener('input', function() {
+  const val = this.value;
+  reqMap.forEach(r => {
+    const el = document.getElementById(r.id);
+    if (val.length === 0) {
+      el.className = 'req-item';
+    } else if (r.test(val)) {
+      el.className = 'req-item passed';
+    } else {
+      el.className = 'req-item failed';
+    }
+  });
+});
 
   // ===== STUDENT NUMBER VALIDATION =====
   const studentInput = document.getElementById('studentNumber');
