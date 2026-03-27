@@ -23,27 +23,11 @@
     top: 0;
     z-index: 1030;
   }
-  .student-topbar .brand-area {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
+  .student-topbar .brand-area { display: flex; align-items: center; gap: 0.75rem; }
   .student-topbar .brand-area img { height: 36px; width: 36px; }
-  .student-topbar .brand-area .brand-text {
-    color: #fff;
-    font-weight: 800;
-    font-size: 1.1rem;
-  }
+  .student-topbar .brand-area .brand-text { color: #fff; font-weight: 800; font-size: 1.1rem; }
   .student-topbar .brand-area .brand-text span { color: #f59e0b; }
-  .student-topbar .user-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .student-topbar .user-section .name { color: #fff; font-size: 0.85rem; font-weight: 600; }
-  .student-topbar .user-section .student-no { color: #a7f3d0; font-size: 0.7rem; }
-
-  /* Clickable name button */
+  .student-topbar .user-section { display: flex; align-items: center; gap: 1rem; }
   .btn-profile {
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.2);
@@ -54,7 +38,6 @@
     text-align: right;
   }
   .btn-profile:hover { background: rgba(255,255,255,0.2); }
-
   .btn-logout {
     background: rgba(255,255,255,0.1);
     color: #fff;
@@ -72,74 +55,24 @@
 
   .welcome-card {
     background: linear-gradient(135deg, var(--student-primary) 0%, var(--student-accent) 100%);
-    border-radius: 16px;
-    padding: 2rem;
-    color: #fff;
-    margin-bottom: 1.5rem;
+    border-radius: 16px; padding: 2rem; color: #fff; margin-bottom: 1.5rem;
   }
   .welcome-card h3 { font-weight: 800; margin-bottom: 0.25rem; }
   .welcome-card p { color: #a7f3d0; font-size: 0.9rem; margin: 0; }
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.75rem;
-    margin-top: 1.25rem;
-  }
-  .info-item {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-  }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
+  .info-item { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 0.75rem 1rem; }
   .info-item .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: #a7f3d0; font-weight: 700; }
   .info-item .value { font-size: 0.95rem; font-weight: 700; margin-top: 0.15rem; }
 
-  .card-custom {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    margin-bottom: 1.25rem;
-  }
-  .card-custom .card-header {
-    background: transparent;
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 1.25rem;
-    font-weight: 700;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  .card-custom { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 1.25rem; }
+  .card-custom .card-header { background: transparent; border-bottom: 1px solid var(--border); padding: 1rem 1.25rem; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between; }
   .card-custom .card-body { padding: 1.25rem; }
 
-  .table thead th {
-    background: var(--student-primary);
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: none;
-    padding: 0.75rem 1rem;
-    white-space: nowrap;
-  }
-  .table tbody td {
-    font-size: 0.85rem;
-    padding: 0.7rem 1rem;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--border);
-  }
+  .table thead th { background: var(--student-primary); color: #fff; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; border: none; padding: 0.75rem 1rem; white-space: nowrap; }
+  .table tbody td { font-size: 0.85rem; padding: 0.7rem 1rem; vertical-align: middle; border-bottom: 1px solid var(--border); }
   .table tbody tr:hover { background: #f0fdf4; }
 
-  .badge-day {
-    display: inline-block;
-    padding: 0.3rem 0.6rem;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+  .badge-day { display: inline-block; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .badge-Monday    { background: #dbeafe; color: #1e40af; }
   .badge-Tuesday   { background: #fce7f3; color: #9d174d; }
   .badge-Wednesday { background: #d1fae5; color: #065f46; }
@@ -148,46 +81,110 @@
   .badge-Saturday  { background: #fae8ff; color: #86198f; }
   .badge-Sunday    { background: #fee2e2; color: #991b1b; }
 
-  .stat-mini {
-    text-align: center;
-    padding: 1rem;
-    border-radius: 12px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-  }
+  .stat-mini { text-align: center; padding: 1rem; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--border); }
   .stat-mini .number { font-size: 1.75rem; font-weight: 800; color: var(--student-primary); }
   .stat-mini .label  { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.15rem; }
 
   .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
   .empty-state i { font-size: 3rem; margin-bottom: 1rem; }
 
-  /* Profile Modal */
-  .profile-avatar {
-    width: 70px; height: 70px;
-    border-radius: 50%;
+  /* View Toggle */
+  .view-toggle { display: flex; gap: 0.5rem; }
+  .view-btn { padding: 0.35rem 0.85rem; border-radius: 8px; border: 1px solid var(--border); background: #fff; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
+  .view-btn.active { background: var(--student-primary); color: #fff; border-color: var(--student-primary); }
+
+  /* ===== CALENDAR STYLES ===== */
+  #calendarView { display: none; }
+  .cal-week-grid {
+    display: grid;
+    grid-template-columns: 70px repeat(6, 1fr);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-bg);
+  }
+  .cal-header {
     background: var(--student-primary);
     color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.75rem; font-weight: 800;
-    margin: 0 auto 1rem;
+    padding: 0.65rem 0.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
-  .profile-info-row {
+  .cal-time-label {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-align: right;
+    padding: 0 0.5rem;
     display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.85rem;
+    align-items: flex-start;
+    padding-top: 4px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid #f1f5f9;
+    font-weight: 600;
+    background: #fafafa;
   }
+  .cal-cell {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid #f1f5f9;
+    position: relative;
+    min-height: 44px;
+  }
+  .cal-cell:last-child { border-right: none; }
+  .cal-event {
+    position: absolute;
+    left: 2px; right: 2px;
+    border-radius: 6px;
+    padding: 3px 6px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 2;
+    line-height: 1.3;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .cal-event:hover { transform: scale(1.02); box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+  .cal-event .ev-code { font-size: 0.72rem; font-weight: 800; }
+  .cal-event .ev-room { font-size: 0.62rem; opacity: 0.85; }
+
+  /* Event color palette */
+  .ev-color-0 { background: #1e40af; color: #fff; }
+  .ev-color-1 { background: #065f46; color: #fff; }
+  .ev-color-2 { background: #92400e; color: #fff; }
+  .ev-color-3 { background: #4338ca; color: #fff; }
+  .ev-color-4 { background: #86198f; color: #fff; }
+  .ev-color-5 { background: #9d174d; color: #fff; }
+  .ev-color-6 { background: #052e16; color: #fff; }
+  .ev-color-7 { background: #0369a1; color: #fff; }
+
+  /* Tooltip popup */
+  .ev-tooltip {
+    display: none;
+    position: fixed;
+    background: #1e293b;
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.78rem;
+    z-index: 9999;
+    min-width: 200px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+  .ev-tooltip .tt-title { font-weight: 800; font-size: 0.85rem; margin-bottom: 0.35rem; color: #f59e0b; }
+  .ev-tooltip .tt-row { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.2rem; opacity: 0.9; }
+
+  /* Profile Modal */
+  .profile-avatar { width: 70px; height: 70px; border-radius: 50%; background: var(--student-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; font-weight: 800; margin: 0 auto 1rem; }
+  .profile-info-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
   .profile-info-row:last-child { border-bottom: none; }
   .profile-info-row .pi-label { color: var(--text-muted); font-weight: 600; }
   .profile-info-row .pi-value { font-weight: 700; color: var(--text-dark); }
-  .modal-header-green {
-    background: var(--student-primary);
-    color: #fff;
-    border-radius: 16px 16px 0 0;
-    padding: 1rem 1.25rem;
-  }
-  .modal-header-green .btn-close { filter: invert(1); }
+  .modal-header-green { background: var(--student-primary); color: #fff; border-radius: 16px 16px 0 0; padding: 1rem 1.25rem; }
 </style>
 
 <!-- TOPBAR -->
@@ -197,10 +194,9 @@
     <div class="brand-text"><span>CIT </span>Schedule <small style="font-weight:400;font-size:0.7rem;color:#a7f3d0;">Student Portal</small></div>
   </div>
   <div class="user-section">
-    <!-- Clickable name → opens profile modal -->
     <button class="btn-profile d-none d-md-block" id="openProfileBtn" style="border:none;">
-      <div class="name" style="color:#fff;font-size:0.85rem;font-weight:600;"><i class="fas fa-user-circle me-1"></i><%= student ? student.fname + ' ' + student.lname : 'Student' %></div>
-      <div class="student-no"><%= student ? student.studentNumber : '' %></div>
+      <div style="color:#fff;font-size:0.85rem;font-weight:600;"><i class="fas fa-user-circle me-1"></i><%= student ? student.fname + ' ' + student.lname : 'Student' %></div>
+      <div style="color:#a7f3d0;font-size:0.7rem;"><%= student ? student.studentNumber : '' %></div>
     </button>
     <a href="/student-logout" class="btn-logout"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
   </div>
@@ -217,30 +213,12 @@
     <p>Here's your schedule overview for the current term.</p>
     <% if (s) { %>
     <div class="info-grid">
-      <div class="info-item">
-        <div class="label">Student No.</div>
-        <div class="value"><%= s.studentNumber %></div>
-      </div>
-      <div class="info-item">
-        <div class="label">Year Level</div>
-        <div class="value">Year <%= s.yearLevel %></div>
-      </div>
-      <div class="info-item">
-        <div class="label">Section</div>
-        <div class="value"><%= s.sectionId ? s.sectionId.sectionName : 'Not Assigned' %></div>
-      </div>
-      <div class="info-item">
-        <div class="label">Semester</div>
-        <div class="value">Sem <%= s.semester %></div>
-      </div>
-      <div class="info-item">
-        <div class="label">School Year</div>
-        <div class="value"><%= s.schoolYear %></div>
-      </div>
-      <div class="info-item">
-        <div class="label">Type</div>
-        <div class="value"><%= s.studentType ? s.studentType.charAt(0).toUpperCase() + s.studentType.slice(1) : '-' %></div>
-      </div>
+      <div class="info-item"><div class="label">Student No.</div><div class="value"><%= s.studentNumber %></div></div>
+      <div class="info-item"><div class="label">Year Level</div><div class="value">Year <%= s.yearLevel %></div></div>
+      <div class="info-item"><div class="label">Section</div><div class="value"><%= s.sectionId ? s.sectionId.sectionName : 'Not Assigned' %></div></div>
+      <div class="info-item"><div class="label">Semester</div><div class="value">Sem <%= s.semester %></div></div>
+      <div class="info-item"><div class="label">School Year</div><div class="value"><%= s.schoolYear %></div></div>
+      <div class="info-item"><div class="label">Type</div><div class="value"><%= s.studentType ? s.studentType.charAt(0).toUpperCase() + s.studentType.slice(1) : '-' %></div></div>
     </div>
     <% } %>
   </div>
@@ -249,30 +227,10 @@
 
   <!-- STAT CARDS -->
   <div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
-      <div class="stat-mini">
-        <div class="number"><%= scheds.length %></div>
-        <div class="label">Total Classes</div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="stat-mini">
-        <div class="number"><%= scheds.reduce((sum, sc) => sum + (sc.subjectId ? sc.subjectId.units : 0), 0) %></div>
-        <div class="label">Total Units</div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="stat-mini">
-        <div class="number"><%= [...new Set(scheds.map(sc => sc.day))].length %></div>
-        <div class="label">Days / Week</div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="stat-mini">
-        <div class="number"><%= scheds.filter(sc => sc.subjectId).length %></div>
-        <div class="label">Subjects</div>
-      </div>
-    </div>
+    <div class="col-6 col-md-3"><div class="stat-mini"><div class="number"><%= scheds.length %></div><div class="label">Total Classes</div></div></div>
+    <div class="col-6 col-md-3"><div class="stat-mini"><div class="number"><%= scheds.reduce((sum, sc) => sum + (sc.subjectId ? sc.subjectId.units : 0), 0) %></div><div class="label">Total Units</div></div></div>
+    <div class="col-6 col-md-3"><div class="stat-mini"><div class="number"><%= [...new Set(scheds.map(sc => sc.day))].length %></div><div class="label">Days / Week</div></div></div>
+    <div class="col-6 col-md-3"><div class="stat-mini"><div class="number"><%= scheds.filter(sc => sc.subjectId).length %></div><div class="label">Subjects</div></div></div>
   </div>
 
   <% if (scheds.length === 0) { %>
@@ -281,76 +239,93 @@
         <div class="empty-state">
           <i class="fas fa-calendar-times"></i>
           <h5 style="font-weight:700;">No Schedule Yet</h5>
-          <p>Your schedule hasn't been assigned yet. Please wait for the admin to set it up, or contact your department.</p>
+          <p>Your schedule hasn't been assigned yet. Please contact your department.</p>
         </div>
       </div>
     </div>
   <% } else { %>
-    <% const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']; %>
-    <% days.forEach(day => { %>
-      <% const dayScheds = scheds.filter(sc => sc.day === day); %>
-      <% if (dayScheds.length > 0) { %>
-      <div class="card-custom">
-        <div class="card-header">
-          <span><span class="badge-day badge-<%= day %> me-2"><%= day %></span> Schedule</span>
-          <span style="font-size:0.8rem;color:var(--text-muted);"><%= dayScheds.length %> class<%= dayScheds.length > 1 ? 'es' : '' %></span>
-        </div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table mb-0">
-              <thead>
-                <tr>
-                  <th>Time</th>
-                  <th>Subject Code</th>
-                  <th>Subject Name</th>
-                  <th>Units</th>
-                  <th>Teacher</th>
-                  <th>Room</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% dayScheds.forEach(sched => { %>
-                <tr>
-                  <td><strong><%= sched.timeFrom %> - <%= sched.timeTo %></strong></td>
-                  <td><strong><%= sched.subjectId ? sched.subjectId.subjectCode : 'N/A' %></strong></td>
-                  <td><%= sched.subjectId ? sched.subjectId.subjectName : 'N/A' %></td>
-                  <td><%= sched.subjectId ? sched.subjectId.units : '-' %></td>
-                  <td><%= sched.teacherId ? sched.teacherId.fname + ' ' + sched.teacherId.lname : 'TBA' %></td>
-                  <td><%= sched.roomId ? sched.roomId.roomNumber : 'TBA' %></td>
-                </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          </div>
+
+    <!-- VIEW TOGGLE HEADER -->
+    <div class="card-custom">
+      <div class="card-header">
+        <span><i class="fas fa-calendar-week me-2"></i>My Schedule</span>
+        <div class="view-toggle">
+          <button class="view-btn active" id="btnCalendar"><i class="fas fa-calendar-alt me-1"></i>Calendar</button>
+          <button class="view-btn" id="btnList"><i class="fas fa-list me-1"></i>List</button>
         </div>
       </div>
-      <% } %>
-    <% }) %>
+
+      <!-- ===== CALENDAR VIEW ===== -->
+      <div class="card-body" id="calendarView" style="display:block;overflow-x:auto;">
+        <div class="cal-week-grid" id="calGrid"></div>
+      </div>
+
+      <!-- ===== LIST VIEW ===== -->
+      <div id="listView" style="display:none;">
+        <% const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']; %>
+        <% days.forEach(day => { %>
+          <% const dayScheds = scheds.filter(sc => sc.day === day); %>
+          <% if (dayScheds.length > 0) { %>
+          <div style="border-bottom: 1px solid var(--border);">
+            <div style="padding:0.75rem 1.25rem;background:#fafafa;font-weight:700;font-size:0.85rem;display:flex;align-items:center;justify-content:space-between;">
+              <span><span class="badge-day badge-<%= day %> me-2"><%= day %></span></span>
+              <span style="font-size:0.8rem;color:var(--text-muted);"><%= dayScheds.length %> class<%= dayScheds.length > 1 ? 'es' : '' %></span>
+            </div>
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Units</th>
+                    <th>Teacher</th>
+                    <th>Room</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% dayScheds.forEach(sched => { %>
+                  <tr>
+                    <td><strong><%= sched.timeFrom %> - <%= sched.timeTo %></strong></td>
+                    <td><strong><%= sched.subjectId ? sched.subjectId.subjectCode : 'N/A' %></strong></td>
+                    <td><%= sched.subjectId ? sched.subjectId.subjectName : 'N/A' %></td>
+                    <td><%= sched.subjectId ? sched.subjectId.units : '-' %></td>
+                    <td><%= sched.teacherId ? sched.teacherId.fname + ' ' + sched.teacherId.lname : 'TBA' %></td>
+                    <td><%= sched.roomId ? sched.roomId.roomNumber : 'TBA' %></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <% } %>
+        <% }) %>
+      </div>
+    </div>
+
   <% } %>
 </div>
 
-<!-- ===================== PROFILE MODAL ===================== -->
-<div id="profileModal" style="display:none;
-position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
-  <div style="background:#fff;border-radius:16px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.2);overflow:hidden;">
+<!-- TOOLTIP -->
+<div class="ev-tooltip" id="evTooltip">
+  <div class="tt-title" id="ttTitle"></div>
+  <div class="tt-row"><i class="fas fa-clock" style="width:14px;"></i><span id="ttTime"></span></div>
+  <div class="tt-row"><i class="fas fa-chalkboard-teacher" style="width:14px;"></i><span id="ttTeacher"></span></div>
+  <div class="tt-row"><i class="fas fa-door-open" style="width:14px;"></i><span id="ttRoom"></span></div>
+  <div class="tt-row"><i class="fas fa-layer-group" style="width:14px;"></i><span id="ttUnits"></span></div>
+</div>
 
-    <!-- Modal Header -->
+<!-- PROFILE MODAL -->
+<div id="profileModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:#fff;border-radius:16px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.2);overflow:hidden;">
     <div class="modal-header-green" style="display:flex;align-items:center;justify-content:space-between;">
       <span style="font-weight:700;font-size:1rem;"><i class="fas fa-user-circle me-2"></i>My Profile</span>
       <button id="closeProfileBtn" style="background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;"><i class="fas fa-times"></i></button>
     </div>
-
-    <!-- Tabs -->
     <div style="display:flex;border-bottom:1px solid var(--border);">
-      <button id="tabInfo" data-tab="info"  style="flex:1;padding:0.75rem;border:none;background:#fff;font-weight:700;font-size:0.85rem;color:var(--student-primary);border-bottom:3px solid var(--student-primary);cursor:pointer;">
-        <i class="fas fa-id-card me-1"></i>Info
-      </button>
-      <button id="tabPass" data-tab="pass" style="flex:1;padding:0.75rem;border:none;background:#fff;font-weight:600;font-size:0.85rem;color:var(--text-muted);border-bottom:3px solid transparent;cursor:pointer;">
-        <i class="fas fa-key me-1"></i>Change Password
-      </button>
+      <button id="tabInfo" style="flex:1;padding:0.75rem;border:none;background:#fff;font-weight:700;font-size:0.85rem;color:var(--student-primary);border-bottom:3px solid var(--student-primary);cursor:pointer;"><i class="fas fa-id-card me-1"></i>Info</button>
+      <button id="tabPass" style="flex:1;padding:0.75rem;border:none;background:#fff;font-weight:600;font-size:0.85rem;color:var(--text-muted);border-bottom:3px solid transparent;cursor:pointer;"><i class="fas fa-key me-1"></i>Change Password</button>
     </div>
-
-    <!-- Tab: Info -->
     <div id="panelInfo" style="padding:1.5rem;">
       <% if (s) { %>
       <div class="profile-avatar"><%= s.fname.charAt(0).toUpperCase() %></div>
@@ -368,8 +343,6 @@ position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:cente
       <div class="profile-info-row"><span class="pi-label">Student Type</span><span class="pi-value"><%= s.studentType ? s.studentType.charAt(0).toUpperCase() + s.studentType.slice(1) : '-' %></span></div>
       <% } %>
     </div>
-
-    <!-- Tab: Change Password -->
     <div id="panelPass" style="padding:1.5rem;display:none;">
       <form action="/student/change-password" method="POST">
         <div class="mb-3">
@@ -390,49 +363,173 @@ position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:cente
         </button>
       </form>
     </div>
-
   </div>
 </div>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
 <script>
-  function switchTab(tab) {
-    document.getElementById('panelInfo').style.display = tab === 'info' ? 'block' : 'none';
-    document.getElementById('panelPass').style.display = tab === 'pass' ? 'block' : 'none';
-    document.getElementById('tabInfo').style.borderBottomColor = tab === 'info' ? 'var(--student-primary)' : 'transparent';
-    document.getElementById('tabInfo').style.color = tab === 'info' ? 'var(--student-primary)' : 'var(--text-muted)';
-    document.getElementById('tabPass').style.borderBottomColor = tab === 'pass' ? 'var(--student-primary)' : 'transparent';
-    document.getElementById('tabPass').style.color = tab === 'pass' ? 'var(--student-primary)' : 'var(--text-muted)';
+// ── Schedule data from server ──────────────────────────────────────
+const schedData = <%- JSON.stringify(typeof studentSchedules !== 'undefined' ? studentSchedules : []) %>;
+
+// ── Calendar Builder ───────────────────────────────────────────────
+const DAYS    = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const COLORS  = ['ev-color-0','ev-color-1','ev-color-2','ev-color-3','ev-color-4','ev-color-5','ev-color-6','ev-color-7'];
+const START_H = 7;   // 7:00 AM
+const END_H   = 20;  // 8:00 PM
+const SLOT_H  = 44;  // px per hour
+
+function toMin(t) {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function buildCalendar() {
+  const grid = document.getElementById('calGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  const totalHours = END_H - START_H;
+  const totalPx    = totalHours * SLOT_H;
+
+  // Header row
+  const timeHeader = document.createElement('div');
+  timeHeader.className = 'cal-header';
+  timeHeader.style.cssText = 'background:#1e293b;';
+  timeHeader.textContent = 'Time';
+  grid.appendChild(timeHeader);
+
+  DAYS.forEach(d => {
+    const h = document.createElement('div');
+    h.className = 'cal-header';
+    h.textContent = d.substring(0,3).toUpperCase();
+    grid.appendChild(h);
+  });
+
+  // Time slots
+  for (let h = START_H; h < END_H; h++) {
+    // Time label
+    const label = document.createElement('div');
+    label.className = 'cal-time-label';
+    label.style.height = SLOT_H + 'px';
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hr12 = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+    label.textContent = hr12 + ':00 ' + ampm;
+    grid.appendChild(label);
+
+    // Day cells
+    DAYS.forEach(day => {
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell';
+      cell.style.height = SLOT_H + 'px';
+      grid.appendChild(cell);
+    });
   }
 
-  document.getElementById('openProfileBtn')?.addEventListener('click', function() {
-    document.getElementById('profileModal').style.display = 'flex';
-  });
+  // Place events
+  const subjectColorMap = {};
+  let colorIdx = 0;
 
-  document.getElementById('closeProfileBtn')?.addEventListener('click', function() {
-    document.getElementById('profileModal').style.display = 'none';
-  });
+  schedData.forEach(sched => {
+    const dayIdx = DAYS.indexOf(sched.day);
+    if (dayIdx === -1) return;
 
-  document.getElementById('tabInfo')?.addEventListener('click', function() {
-    switchTab('info');
-  });
+    const fromMin = toMin(sched.timeFrom);
+    const toMin2  = toMin(sched.timeTo);
+    if (fromMin < START_H * 60 || toMin2 > END_H * 60) return;
 
-  document.getElementById('tabPass')?.addEventListener('click', function() {
-    switchTab('pass');
-  });
-
-  document.getElementById('profileModal').addEventListener('click', function(e) {
-    if (e.target === this) this.style.display = 'none';
-  });
-
-  document.getElementById('confirmPass')?.addEventListener('input', function() {
-    const msg = document.getElementById('matchMsg');
-    if (document.getElementById('newPass').value === this.value) {
-      msg.textContent = '✓ Passwords match';
-      msg.style.color = '#10b981';
-    } else {
-      msg.textContent = '✗ Passwords do not match';
-      msg.style.color = '#ef4444';
+    const subCode = sched.subjectId ? sched.subjectId.subjectCode : 'N/A';
+    if (!subjectColorMap[subCode]) {
+      subjectColorMap[subCode] = COLORS[colorIdx % COLORS.length];
+      colorIdx++;
     }
+
+    // Find the cell column for this day/hour
+    const startHour = Math.floor(fromMin / 60);
+    const rowIdx    = startHour - START_H;
+    // grid columns: 0=time, 1-6=days; rows: 0=header, 1..totalHours=slots
+    // Each row has 7 items. Find the day cell at rowIdx
+    const cellIndex = (rowIdx + 1) * 7 + (dayIdx + 1); // +1 for header row, +1 for time col
+    const cells = grid.children;
+    const targetCell = cells[cellIndex];
+    if (!targetCell) return;
+
+    const topOffset  = ((fromMin - startHour * 60) / 60) * SLOT_H;
+    const durationPx = ((toMin2 - fromMin) / 60) * SLOT_H;
+
+    const ev = document.createElement('div');
+    ev.className = 'cal-event ' + subjectColorMap[subCode];
+    ev.style.top    = topOffset + 'px';
+    ev.style.height = (durationPx - 4) + 'px';
+
+    const teacherName = sched.teacherId ? sched.teacherId.lname + ', ' + sched.teacherId.fname : 'TBA';
+    const roomName    = sched.roomId ? sched.roomId.roomNumber : 'TBA';
+    const subName     = sched.subjectId ? sched.subjectId.subjectName : '';
+    const units       = sched.subjectId ? sched.subjectId.units + ' units' : '';
+
+    ev.innerHTML = `<div class="ev-code">${subCode}</div><div class="ev-room">${sched.timeFrom}–${sched.timeTo}</div>`;
+
+    // Tooltip on hover
+    ev.addEventListener('mouseenter', function(e) {
+      const tt = document.getElementById('evTooltip');
+      document.getElementById('ttTitle').textContent    = subCode + ' — ' + subName;
+      document.getElementById('ttTime').textContent     = sched.timeFrom + ' – ' + sched.timeTo;
+      document.getElementById('ttTeacher').textContent  = teacherName;
+      document.getElementById('ttRoom').textContent     = roomName;
+      document.getElementById('ttUnits').textContent    = units;
+      tt.style.display = 'block';
+      tt.style.left    = (e.clientX + 12) + 'px';
+      tt.style.top     = (e.clientY - 10) + 'px';
+    });
+    ev.addEventListener('mousemove', function(e) {
+      const tt = document.getElementById('evTooltip');
+      tt.style.left = (e.clientX + 12) + 'px';
+      tt.style.top  = (e.clientY - 10) + 'px';
+    });
+    ev.addEventListener('mouseleave', function() {
+      document.getElementById('evTooltip').style.display = 'none';
+    });
+
+    targetCell.style.position = 'relative';
+    targetCell.appendChild(ev);
   });
+}
+
+// ── View Toggle ────────────────────────────────────────────────────
+document.getElementById('btnCalendar')?.addEventListener('click', function() {
+  document.getElementById('calendarView').style.display = 'block';
+  document.getElementById('listView').style.display = 'none';
+  this.classList.add('active');
+  document.getElementById('btnList').classList.remove('active');
+});
+
+document.getElementById('btnList')?.addEventListener('click', function() {
+  document.getElementById('listView').style.display = 'block';
+  document.getElementById('calendarView').style.display = 'none';
+  this.classList.add('active');
+  document.getElementById('btnCalendar').classList.remove('active');
+});
+
+// ── Profile Modal ──────────────────────────────────────────────────
+function switchTab(tab) {
+  document.getElementById('panelInfo').style.display = tab === 'info' ? 'block' : 'none';
+  document.getElementById('panelPass').style.display = tab === 'pass' ? 'block' : 'none';
+  document.getElementById('tabInfo').style.borderBottomColor = tab === 'info' ? 'var(--student-primary)' : 'transparent';
+  document.getElementById('tabInfo').style.color = tab === 'info' ? 'var(--student-primary)' : 'var(--text-muted)';
+  document.getElementById('tabPass').style.borderBottomColor = tab === 'pass' ? 'var(--student-primary)' : 'transparent';
+  document.getElementById('tabPass').style.color = tab === 'pass' ? 'var(--student-primary)' : 'var(--text-muted)';
+}
+document.getElementById('openProfileBtn')?.addEventListener('click', function() { document.getElementById('profileModal').style.display = 'flex'; });
+document.getElementById('closeProfileBtn')?.addEventListener('click', function() { document.getElementById('profileModal').style.display = 'none'; });
+document.getElementById('tabInfo')?.addEventListener('click', function() { switchTab('info'); });
+document.getElementById('tabPass')?.addEventListener('click', function() { switchTab('pass'); });
+document.getElementById('profileModal')?.addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; });
+document.getElementById('confirmPass')?.addEventListener('input', function() {
+  const msg = document.getElementById('matchMsg');
+  if (document.getElementById('newPass').value === this.value) { msg.textContent = '✓ Passwords match'; msg.style.color = '#10b981'; }
+  else { msg.textContent = '✗ Passwords do not match'; msg.style.color = '#ef4444'; }
+});
+
+// Build calendar on load
+buildCalendar();
 </script>
