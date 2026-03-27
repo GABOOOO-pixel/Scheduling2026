@@ -49,6 +49,7 @@ const postForgotPassword = async (req, res) => {
       await user.save({ validateBeforeSave: false });
       await sendTempPasswordEmail(normalizedEmail, tempPass);
       console.log('✅ Temp password sent to user:', normalizedEmail);
+      console.log('✅ Password hash saved:', user.password);
       req.session.success = successMsg;
       return res.redirect("/fg");
     }
